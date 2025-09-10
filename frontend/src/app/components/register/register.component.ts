@@ -1,4 +1,5 @@
 import { Component, computed, effect, signal, inject } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -10,7 +11,7 @@ import { RegisterRequest } from '../../models/auth.models';
   selector: 'app-register',
   standalone: true,
   templateUrl: './register.component.html',
-  imports: [CommonModule, FormsModule, HttpClientModule, RouterLink]
+  imports: [CommonModule, FormsModule, HttpClientModule, RouterLink, TranslateModule]
 })
 export class RegisterComponent {
   username = signal('');

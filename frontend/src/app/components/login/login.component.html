@@ -1,24 +1,24 @@
 
 <div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-purple-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 transition-colors duration-500 transition-all duration-500 ease-in-out animate-fade-in">
-  <div class="max-w-md w-full p-8 bg-white dark:bg-gray-900 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-800 animate-fade-in flex flex-col justify-center items-center">
-    <h2 class="text-3xl font-extrabold text-center mb-6 text-gray-900 dark:text-white tracking-tight">Iniciar sesión</h2>
+  <div class="max-w-md w-full p-4 md:p-8 mx-2 bg-white dark:bg-gray-900 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-800 animate-fade-in flex flex-col justify-center items-center">
+  <h2 class="text-3xl font-extrabold text-center mb-6 text-gray-900 dark:text-white tracking-tight">{{ 'login.title' | translate }}</h2>
     <form (ngSubmit)="login()" autocomplete="off" class="space-y-4">
       <div>
-        <label for="username" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Email</label>
-        <input id="username" type="text" class="mt-1 block w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 p-2 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-200" placeholder="Email" [value]="username()" (input)="username.set($event.target.value)" name="username" required autocomplete="username">
+  <label for="username" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ 'login.email' | translate }}</label>
+  <input id="username" type="text" class="mt-1 block w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 p-2 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-200" [placeholder]="'login.email' | translate" [value]="username()" (input)="username.set($event.target.value)" name="username" required autocomplete="username">
       </div>
       <div>
-        <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Contraseña</label>
-        <input id="password" type="password" class="mt-1 block w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 p-2 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-200" placeholder="Contraseña" [value]="password()" (input)="password.set($event.target.value)" name="password" required autocomplete="current-password">
+  <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ 'login.password' | translate }}</label>
+  <input id="password" type="password" class="mt-1 block w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 p-2 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-200" [placeholder]="'login.password' | translate" [value]="password()" (input)="password.set($event.target.value)" name="password" required autocomplete="current-password">
       </div>
       <button type="submit" class="w-full py-2 rounded-lg bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-semibold shadow-md transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed" [disabled]="!canLogin() || loading()">
-        <span *ngIf="!loading()">Entrar</span>
+        <span *ngIf="!loading()">{{ 'login.button' | translate }}</span>
         <span *ngIf="loading()" class="flex items-center justify-center gap-2"><svg class="animate-spin h-5 w-5 text-white" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path></svg>Procesando...</span>
       </button>
     </form>
     <div *ngIf="error()" class="mt-4 text-red-500 text-center animate-fade-in">{{ error() }}</div>
     <div class="mt-6 text-center">
-  <button [routerLink]="['/register']" class="text-blue-500 hover:underline font-medium">¿No tienes cuenta? Regístrate</button>
+  <button [routerLink]="['/register']" class="text-blue-500 hover:underline font-medium">{{ 'login.noAccount' | translate }}</button>
     </div>
   </div>
 </div>

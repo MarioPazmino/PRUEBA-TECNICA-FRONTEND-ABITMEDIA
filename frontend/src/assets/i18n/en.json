@@ -1,0 +1,16 @@
+{
+  "login": {
+    "title": "Sign in",
+    "email": "Email",
+    "password": "Password",
+    "button": "Login",
+    "noAccount": "Don't have an account? Register"
+  },
+  "register": {
+    "title": "Register",
+    "email": "Email",
+    "password": "Password",
+    "button": "Register",
+    "hasAccount": "Already have an account? Sign in"
+  }
+}

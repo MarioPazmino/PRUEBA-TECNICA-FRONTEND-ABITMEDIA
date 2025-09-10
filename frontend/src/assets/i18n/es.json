@@ -1,0 +1,16 @@
+{
+  "login": {
+    "title": "Iniciar sesión",
+    "email": "Email",
+    "password": "Contraseña",
+    "button": "Entrar",
+    "noAccount": "¿No tienes cuenta? Regístrate"
+  },
+  "register": {
+    "title": "Registro",
+    "email": "Email",
+    "password": "Contraseña",
+    "button": "Registrarse",
+    "hasAccount": "¿Ya tienes cuenta? Inicia sesión"
+  }
+}
