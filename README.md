@@ -1,6 +1,37 @@
 
 # PRUEBA-TECNICA-FRONTEND-ABITMEDIA
 PRUEBA TECNICA FRONTEND ABITMEDIA
+docker-compose up --build
+
+## ¿Cómo levantar toda la aplicación?
+
+Puedes levantar el backend (Spring Boot) y el frontend (Angular + Tailwind v4) juntos usando Docker Compose. Solo necesitas tener Docker y Docker Compose instalados.
+
+### Pasos rápidos
+
+1. Clona el repositorio:
+
+	```bash
+	git clone https://github.com/Desarrollo2Abitmedia/prueba_tecnica_front.git
+	cd prueba-tecnica-front
+	```
+
+2. Levanta todo con Docker Compose:
+
+	```bash
+	docker-compose up --build
+	```
+
+	Esto construirá y levantará ambos servicios:
+	- Backend: Spring Boot en el puerto `8080` (API y Swagger)
+	- Frontend: Angular + Tailwind v4 servido por Nginx en el puerto `4200`
+
+3. Accede a la aplicación:
+	- Frontend: [http://localhost:4200](http://localhost:4200)
+	- Backend/API: [http://localhost:8080](http://localhost:8080)
+	- Documentación API: [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)
+
+---
 
 ## Integración Angular + Tailwind CSS v4
 
