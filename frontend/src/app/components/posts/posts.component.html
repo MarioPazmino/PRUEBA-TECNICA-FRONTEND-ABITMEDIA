@@ -20,7 +20,7 @@
         </div>
       </div>
       <p class="mt-2 text-gray-700 dark:text-gray-200">{{ post.content }}</p>
-      <small class="text-gray-400 dark:text-gray-500">Por: {{ post.author }} | {{ post.createdAt | date:'short' }}</small>
+      <small class="text-gray-400 dark:text-gray-500">Por: {{ post.authorUsername }} | {{ post.createdAt | date:'short' }}</small>
     </div>
     <div *ngIf="editing" class="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
       <div class="bg-white dark:bg-gray-900 p-6 rounded-2xl shadow w-full max-w-md border border-gray-200 dark:border-gray-700">

@@ -28,14 +28,14 @@ export class PostsComponent {
   }
 
   loadPosts() {
-    this.postService.getPosts().subscribe(posts => {
-      this.posts.set(posts);
+    this.postService.getPosts().subscribe(response => {
+      this.posts.set(response.data);
     });
   }
 
   createPost() {
     if (!this.title || !this.content) return;
-    this.postService.createPost({ title: this.title, content: this.content, author: 'Usuario' }).subscribe(post => {
+    this.postService.createPost({ title: this.title, content: this.content, authorUsername: 'Usuario' }).subscribe(post => {
       this.posts.set([post, ...this.posts()]);
       this.title = '';
       this.content = '';
