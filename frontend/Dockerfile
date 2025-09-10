@@ -7,5 +7,6 @@ RUN npm install --legacy-peer-deps && npm run build --prod
 # Servidor web para archivos estáticos
 FROM nginx:alpine
 COPY --from=build /app/dist/temp-frontend/browser /usr/share/nginx/html
-EXPOSE 4200
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]

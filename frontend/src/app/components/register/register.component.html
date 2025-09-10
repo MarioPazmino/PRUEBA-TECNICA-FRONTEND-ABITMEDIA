@@ -1,12 +1,25 @@
-<div class="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-  <div class="bg-white p-8 rounded shadow-md w-full max-w-sm">
-    <h2 class="text-2xl font-bold mb-6 text-center">Registro</h2>
-    <form (ngSubmit)="register()" autocomplete="off">
-  <input type="text" class="mb-4 p-2 w-full border rounded" placeholder="Email" [value]="username()" (input)="username.set($event.target.value)" name="username" required>
-  <input type="password" class="mb-4 p-2 w-full border rounded" placeholder="Contraseña" [value]="password()" (input)="password.set($event.target.value)" name="password" required>
-      <button type="submit" class="w-full bg-green-500 text-white py-2 rounded disabled:opacity-50" [disabled]="!canRegister()">Registrarse</button>
+
+<div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-50 via-white to-blue-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 transition-colors duration-500 transition-all duration-500 ease-in-out animate-fade-in">
+  <div class="max-w-md w-full p-8 bg-white dark:bg-gray-900 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-800 animate-fade-in flex flex-col justify-center items-center">
+    <h2 class="text-3xl font-extrabold text-center mb-6 text-gray-900 dark:text-white tracking-tight">Registro</h2>
+    <form (ngSubmit)="register()" autocomplete="off" class="space-y-4">
+      <div>
+        <label for="username" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Email</label>
+        <input id="username" type="text" class="mt-1 block w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 p-2 text-gray-900 dark:text-white focus:ring-2 focus:ring-green-500 focus:outline-none transition-all duration-200" placeholder="Email" [value]="username()" (input)="username.set($event.target.value)" name="username" required autocomplete="username">
+      </div>
+      <div>
+        <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Contraseña</label>
+        <input id="password" type="password" class="mt-1 block w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 p-2 text-gray-900 dark:text-white focus:ring-2 focus:ring-green-500 focus:outline-none transition-all duration-200" placeholder="Contraseña (mínimo 8 caracteres)" [value]="password()" (input)="password.set($event.target.value)" name="password" required autocomplete="new-password">
+      </div>
+      <button type="submit" class="w-full py-2 rounded-lg bg-green-600 hover:bg-green-700 active:bg-green-800 text-white font-semibold shadow-md transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed" [disabled]="!canRegister() || loading()">
+        <span *ngIf="!loading()">Registrarse</span>
+        <span *ngIf="loading()" class="flex items-center justify-center gap-2"><svg class="animate-spin h-5 w-5 text-white" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path></svg>Procesando...</span>
+      </button>
     </form>
-    <div *ngIf="error()" class="mt-4 text-red-500 text-center">{{ error() }}</div>
-    <div *ngIf="success()" class="mt-4 text-green-500 text-center">{{ success() }}</div>
+    <div *ngIf="error()" class="mt-4 text-red-500 text-center animate-fade-in">{{ error() }}</div>
+    <div *ngIf="success()" class="mt-4 text-green-500 text-center animate-fade-in">{{ success() }}</div>
+    <div class="mt-6 text-center">
+  <button [routerLink]="['/login']" class="text-green-500 hover:underline font-medium">¿Ya tienes cuenta? Inicia sesión</button>
+    </div>
   </div>
 </div>

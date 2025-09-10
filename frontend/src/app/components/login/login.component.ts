@@ -1,4 +1,5 @@
 import { Component, computed, effect, signal, inject } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
@@ -10,7 +11,7 @@ import { authState } from '../../signals/auth.signal';
   selector: 'app-login',
   standalone: true,
   templateUrl: './login.component.html',
-  imports: [CommonModule, FormsModule, HttpClientModule]
+  imports: [CommonModule, FormsModule, HttpClientModule, RouterLink]
 })
 export class LoginComponent {
   username = signal('');
