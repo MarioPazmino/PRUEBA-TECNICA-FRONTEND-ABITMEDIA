@@ -1,7 +1,7 @@
 
 
 import { RegisterComponent } from './register.component';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
@@ -43,21 +43,19 @@ describe('RegisterComponent', () => {
   });
 
   describe('effect signal for clearing messages', () => {
-    it('should clear error after 3 seconds', (done) => {
+    it('should clear error after 3 seconds', fakeAsync(() => {
       component.error.set('Error!');
-      setTimeout(() => {
-        expect(component.error()).toBe('');
-        done();
-      }, 3100);
-    });
+      fixture.detectChanges();
+      tick(3100);
+      expect(component.error()).toBe('');
+    }));
 
-    it('should clear success after 3 seconds', (done) => {
+    it('should clear success after 3 seconds', fakeAsync(() => {
       component.success.set('Success!');
-      setTimeout(() => {
-        expect(component.success()).toBe('');
-        done();
-      }, 3100);
-    });
+      fixture.detectChanges();
+      tick(3100);
+      expect(component.success()).toBe('');
+    }));
   });
 
 

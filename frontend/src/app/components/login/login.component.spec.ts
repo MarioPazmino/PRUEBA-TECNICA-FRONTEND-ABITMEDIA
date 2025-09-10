@@ -1,5 +1,6 @@
 import { LoginComponent } from './login.component';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import * as AuthSignal from '../../signals/auth.signal';
 import { FormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
@@ -40,13 +41,12 @@ describe('LoginComponent', () => {
   });
 
   describe('effect signal for clearing error', () => {
-    it('should clear error after 3 seconds', (done) => {
+    it('should clear error after 3 seconds', fakeAsync(() => {
       component.error.set('Error!');
-      setTimeout(() => {
-        expect(component.error()).toBe('');
-        done();
-      }, 3100);
-    });
+      fixture.detectChanges();
+      tick(3100);
+      expect(component.error()).toBe('');
+    }));
   });
 
   it('should set loading true and call authService.login on login success', () => {
@@ -58,13 +58,12 @@ describe('LoginComponent', () => {
       })
     };
     (component as any).authService = mockAuthService;
-    const mockAuthState = { set: jasmine.createSpy('set') };
-    (component as any).authState = mockAuthState;
+    const setSpy = spyOn(AuthSignal.authState, 'set');
     component.username.set('test');
     component.password.set('1234');
     component.login();
     expect(component.loading()).toBe(false);
-    expect(mockAuthState.set).toHaveBeenCalledWith({ username: 'test', token: 'abc123' });
+    expect(setSpy).toHaveBeenCalledWith({ username: 'test', token: 'abc123' });
     expect(mockAuthService.login).toHaveBeenCalled();
   });
 
