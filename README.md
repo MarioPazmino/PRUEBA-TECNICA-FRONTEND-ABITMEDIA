@@ -22,5 +22,41 @@ PRUEBA TECNICA FRONTEND ABITMEDIA
 - El frontend (Angular + Tailwind v4) se construye y se sirve mediante Nginx en el puerto 4200.
 - Se está validando que Nginx sirva correctamente los archivos generados por Angular.
 
+
+---
+
+## Autenticación: Login y Registro
+
+### Estado actual
+
+- Se implementaron los componentes de Login y Registro como componentes standalone y reutilizables, siguiendo las nuevas APIs de Angular 20 (`signal`, `inject`, etc.).
+- El diseño es completamente responsivo, optimizado para desktop y móvil, usando Tailwind CSS v4.
+- El espaciado, márgenes y paddings se ajustan dinámicamente para evitar que los cards se peguen a los laterales en pantallas pequeñas.
+- La experiencia de usuario se ha mejorado con transiciones, feedback visual y validaciones en tiempo real.
+- El selector de idioma es un componente reutilizable, minimalista y discreto, permitiendo cambiar entre ES/EN usando ngx-translate.
+- La internacionalización (i18n) está integrada y funcional para los formularios de login y registro.
+- El código es limpio, modular y estructurado para facilitar la extensión y el mantenimiento.
+- La aplicación se levanta correctamente con Docker y Docker Compose, tanto backend como frontend.
+
+## Uso de nuevas APIs de Angular 20 en Login y Registro
+
+En los componentes de autenticación se han utilizado las siguientes APIs modernas de Angular 20:
+
+- **Standalone Components:** Login, Register y el selector de idioma son componentes standalone, lo que permite mayor modularidad y reutilización sin necesidad de NgModules.
+- **Signals:** Se usan signals para el manejo reactivo de estado en los formularios (ejemplo: username, password, loading, error, success), permitiendo una gestión eficiente y reactiva de los datos.
+- **inject():** Se utiliza la función inject para acceder a servicios como AuthService y TranslateService, siguiendo el patrón recomendado en Angular 20 para la inyección de dependencias.
+- **provideHttpClient():** El HttpClient se provee usando la nueva API de providers, facilitando la configuración global y el uso en servicios.
+- **provideRouter():** El enrutamiento se configura con la nueva API, permitiendo rutas standalone y layouts desacoplados.
+- **Ngx-translate v17+:** Integración con la nueva versión de ngx-translate para internacionalización, usando providers y loaders recomendados.
+- **Tailwind v4:** Todo el diseño y responsividad se logra con utilidades de Tailwind v4, integradas en los componentes Angular.
+
+Estas prácticas aseguran un código moderno, limpio y alineado con las recomendaciones actuales de Angular.
+
+### Pendiente
+
+- Finalizar la cobertura de pruebas unitarias (objetivo: 80%).
+- Documentar el resto de los módulos y componentes CRUD.
+- Mejorar la documentación técnica y de uso.
+
 ---
 **Documentación en progreso.**
