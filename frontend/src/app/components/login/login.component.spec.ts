@@ -89,4 +89,84 @@ describe('LoginComponent', () => {
     expect(component.error()).toBe(expectedError);
     expect(mockAuthService.login).toHaveBeenCalled();
   });
+
+  it('should show error for 401 status', fakeAsync(() => {
+    const mockAuthService = {
+      login: jasmine.createSpy('login').and.returnValue({
+        subscribe: (handlers: any) => {
+          handlers.error({ status: 401 });
+        }
+      })
+    };
+    (component as any).authService = mockAuthService;
+    component.username.set('test@example.com');
+    component.password.set('1234Abcd');
+    component.login();
+    tick(100);
+    expect(component.error()).toBe((component as any).translate.instant('login.error'));
+  }));
+
+  it('should show forbidden error for 403 status', fakeAsync(() => {
+    const mockAuthService = {
+      login: jasmine.createSpy('login').and.returnValue({
+        subscribe: (handlers: any) => {
+          handlers.error({ status: 403 });
+        }
+      })
+    };
+    (component as any).authService = mockAuthService;
+    component.username.set('test@example.com');
+    component.password.set('1234Abcd');
+    component.login();
+    tick(100);
+    expect(component.error()).toBe((component as any).translate.instant('login.forbidden'));
+  }));
+
+  it('should show service unavailable error for 404 status', fakeAsync(() => {
+    const mockAuthService = {
+      login: jasmine.createSpy('login').and.returnValue({
+        subscribe: (handlers: any) => {
+          handlers.error({ status: 404 });
+        }
+      })
+    };
+    (component as any).authService = mockAuthService;
+    component.username.set('test@example.com');
+    component.password.set('1234Abcd');
+    component.login();
+    tick(100);
+    expect(component.error()).toBe((component as any).translate.instant('login.serviceUnavailable'));
+  }));
+
+  it('should show conflict error for 409 status', fakeAsync(() => {
+    const mockAuthService = {
+      login: jasmine.createSpy('login').and.returnValue({
+        subscribe: (handlers: any) => {
+          handlers.error({ status: 409 });
+        }
+      })
+    };
+    (component as any).authService = mockAuthService;
+    component.username.set('test@example.com');
+    component.password.set('1234Abcd');
+    component.login();
+    tick(100);
+    expect(component.error()).toBe((component as any).translate.instant('login.conflict'));
+  }));
+
+  it('should show default error for other status', fakeAsync(() => {
+    const mockAuthService = {
+      login: jasmine.createSpy('login').and.returnValue({
+        subscribe: (handlers: any) => {
+          handlers.error({ status: 500 });
+        }
+      })
+    };
+    (component as any).authService = mockAuthService;
+    component.username.set('test@example.com');
+    component.password.set('1234Abcd');
+    component.login();
+    tick(100);
+    expect(component.error()).toBe((component as any).translate.instant('login.error'));
+  }));
 });

@@ -80,6 +80,84 @@ describe('RegisterComponent', () => {
     expect(mockAuthService.register).toHaveBeenCalled();
   }));
 
+  it('should show error for invalid email', fakeAsync(() => {
+    component.username.set('invalid-email');
+    component.password.set('1234Abcd');
+    component.register();
+    expect(component.error()).toBe((component as any).translate.instant('register.invalidEmail'));
+  }));
+
+  it('should show error for invalid password', fakeAsync(() => {
+    component.username.set('test@example.com');
+    component.password.set('short'); // Invalid password
+    component.register();
+    expect(component.error()).toBe((component as any).translate.instant('register.invalidPassword'));
+  }));
+
+  it('should show user exists error (409)', fakeAsync(() => {
+    const mockAuthService = {
+      register: jasmine.createSpy('register').and.returnValue({
+        subscribe: (handlers: any) => {
+          handlers.error({ status: 409 });
+        }
+      })
+    };
+    (component as any).authService = mockAuthService;
+    component.username.set('test@example.com');
+    component.password.set('1234Abcd');
+    component.register();
+    tick(100);
+    expect(component.error()).toBe((component as any).translate.instant('register.userExists'));
+  }));
+
+  it('should show forbidden error (401)', fakeAsync(() => {
+    const mockAuthService = {
+      register: jasmine.createSpy('register').and.returnValue({
+        subscribe: (handlers: any) => {
+          handlers.error({ status: 401 });
+        }
+      })
+    };
+    (component as any).authService = mockAuthService;
+    component.username.set('test@example.com');
+    component.password.set('1234Abcd');
+    component.register();
+    tick(100);
+    expect(component.error()).toBe((component as any).translate.instant('register.forbidden'));
+  }));
+
+  it('should show service unavailable error (404)', fakeAsync(() => {
+    const mockAuthService = {
+      register: jasmine.createSpy('register').and.returnValue({
+        subscribe: (handlers: any) => {
+          handlers.error({ status: 404 });
+        }
+      })
+    };
+    (component as any).authService = mockAuthService;
+    component.username.set('test@example.com');
+    component.password.set('1234Abcd');
+    component.register();
+    tick(100);
+    expect(component.error()).toBe((component as any).translate.instant('register.serviceUnavailable'));
+  }));
+
+  it('should show default error for other status', fakeAsync(() => {
+    const mockAuthService = {
+      register: jasmine.createSpy('register').and.returnValue({
+        subscribe: (handlers: any) => {
+          handlers.error({ status: 500 });
+        }
+      })
+    };
+    (component as any).authService = mockAuthService;
+    component.username.set('test@example.com');
+    component.password.set('1234Abcd');
+    component.register();
+    tick(100);
+    expect(component.error()).toBe((component as any).translate.instant('register.error'));
+  }));
+
   // Add other tests here if needed
 
 });
