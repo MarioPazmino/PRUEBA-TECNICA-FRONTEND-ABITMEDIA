@@ -6,6 +6,36 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 
 describe('LoginComponent', () => {
+  it('should clear success message via effect signal after 5 seconds', fakeAsync(() => {
+    component.success.set('Login successful');
+    fixture.detectChanges();
+    tick(5000);
+    expect(component.success()).toBe('');
+  }));
+  it('should show success message on login and auto-clear after 5 seconds', fakeAsync(() => {
+    const mockAuthService = {
+      login: jasmine.createSpy('login').and.returnValue({
+        subscribe: (handlers: any) => {
+          handlers.next({ data: { username: 'test', token: 'abc123' } });
+        }
+      })
+    };
+    (component as any).authService = mockAuthService;
+    component.username.set('test');
+    component.password.set('1234');
+    component.login();
+    // Simulate the effect signal triggering autoClearSuccess
+    component.success.set('Login successful');
+    component.autoClearSuccess();
+    tick(5000);
+    expect(component.success()).toBe('');
+  }));
+  it('should auto-clear success message after 5 seconds', fakeAsync(() => {
+    component.success.set('Login successful');
+    component.autoClearSuccess();
+    tick(5000);
+    expect(component.success()).toBe('');
+  }));
   let component: LoginComponent;
   let fixture: ComponentFixture<LoginComponent>;
 

@@ -40,10 +40,18 @@ export class LoginComponent {
         setTimeout(() => this.error.set(''), 3000);
       }
       if (this.success()) {
-        setTimeout(() => this.success.set(''), 3000);
+        this.autoClearSuccess();
       }
     });
+  // ...existing code...
   }
+
+/**
+ * Auto-clear success message after 5 seconds
+ */
+autoClearSuccess() {
+  setTimeout(() => this.success.set(''), 5000);
+}
 
   login() {
     this.loading.set(true);
