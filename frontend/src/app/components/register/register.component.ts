@@ -1,5 +1,6 @@
 import { Component, computed, effect, signal, inject } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
+import { TranslateService } from '@ngx-translate/core';
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -17,6 +18,7 @@ import { Subject, debounceTime } from 'rxjs';
   imports: [CommonModule, FormsModule, HttpClientModule, RouterLink, TranslateModule, NotificationComponent]
 })
 export class RegisterComponent {
+  private translate = inject(TranslateService);
   username = signal('');
   password = signal('');
   loading = signal(false);
@@ -40,12 +42,12 @@ export class RegisterComponent {
   register() {
     // Validaciones previas
     if (!this.username().match(/^\S+@\S+\.\S+$/)) {
-      this.error.set('El usuario debe ser un email válido.');
+      this.error.set(this.translate.instant('register.invalidEmail'));
       setTimeout(() => this.error.set(''), 3000);
       return;
     }
     if (!this.password().match(/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{8,}$/)) {
-      this.error.set('La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número.');
+      this.error.set(this.translate.instant('register.invalidPassword'));
       setTimeout(() => this.error.set(''), 3000);
       return;
     }
@@ -56,20 +58,20 @@ export class RegisterComponent {
     };
     this.authService.register(data).subscribe({
       next: (res: any) => {
-        this.success.set('Usuario registrado correctamente');
+        this.success.set(this.translate.instant('register.success'));
         this.loading.set(false);
         this.username.set('');
         this.password.set('');
       },
       error: (err: any) => {
         if (err.status === 409) {
-          this.error.set('El usuario ya existe. Usa otro correo.');
+          this.error.set(this.translate.instant('register.userExists'));
         } else if (err.status === 401) {
-          this.error.set('No tienes permisos para registrar usuarios.');
+          this.error.set(this.translate.instant('register.forbidden'));
         } else if (err.status === 404) {
-          this.error.set('El servicio de registro no está disponible.');
+          this.error.set(this.translate.instant('register.serviceUnavailable'));
         } else {
-          this.error.set('Error al registrar usuario');
+          this.error.set(this.translate.instant('register.error'));
         }
         this.loading.set(false);
       }

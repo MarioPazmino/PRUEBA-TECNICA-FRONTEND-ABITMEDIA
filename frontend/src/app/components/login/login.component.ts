@@ -1,5 +1,6 @@
 import { Component, computed, effect, signal, inject } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
+import { TranslateService } from '@ngx-translate/core';
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -30,6 +31,7 @@ export class LoginComponent {
 
 
   private authService = inject(AuthService);
+  private translate = inject(TranslateService);
 
   constructor() {
     // Effect signal para mostrar errores
@@ -53,21 +55,21 @@ export class LoginComponent {
       next: (res: AuthResponse) => {
         authState.set({ username: res.data.username, token: res.data.token });
         this.error.set('');
-        this.success.set('¡Inicio de sesión exitoso!');
+        this.success.set(this.translate.instant('login.success'));
         this.loading.set(false);
       },
       error: (err) => {
         this.success.set('');
         if (err.status === 401) {
-          this.error.set('Usuario o contraseña incorrectos.');
+          this.error.set(this.translate.instant('login.error'));
         } else if (err.status === 403) {
-          this.error.set('No tienes permisos para acceder.');
+          this.error.set(this.translate.instant('login.forbidden'));
         } else if (err.status === 404) {
-          this.error.set('Servicio de autenticación no disponible.');
+          this.error.set(this.translate.instant('login.serviceUnavailable'));
         } else if (err.status === 409) {
-          this.error.set('Conflicto de credenciales.');
+          this.error.set(this.translate.instant('login.conflict'));
         } else {
-          this.error.set('Error de conexión o credenciales inválidas.');
+          this.error.set(this.translate.instant('login.error'));
         }
         this.loading.set(false);
       }

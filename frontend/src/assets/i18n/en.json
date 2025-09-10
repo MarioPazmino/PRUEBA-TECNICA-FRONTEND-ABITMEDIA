@@ -4,13 +4,26 @@
     "email": "Email",
     "password": "Password",
     "button": "Login",
-    "noAccount": "Don't have an account? Register"
+    "noAccount": "Don't have an account? Register",
+    "success": "Login successful!",
+    "error": "Invalid credentials or connection error.",
+    "userNotFound": "User not found.",
+    "forbidden": "You do not have permission to access.",
+    "conflict": "Credential conflict.",
+    "serviceUnavailable": "Authentication service unavailable."
   },
   "register": {
     "title": "Register",
     "email": "Email",
     "password": "Password",
     "button": "Register",
-    "hasAccount": "Already have an account? Sign in"
+    "hasAccount": "Already have an account? Sign in",
+    "success": "Registration successful!",
+    "error": "Registration error.",
+    "userExists": "User already exists. Use another email.",
+    "forbidden": "You do not have permission to register users.",
+    "serviceUnavailable": "Registration service unavailable.",
+    "invalidPassword": "Password must have at least 8 characters, one uppercase, one lowercase and one number.",
+    "invalidEmail": "Email must be valid."
   }
 }

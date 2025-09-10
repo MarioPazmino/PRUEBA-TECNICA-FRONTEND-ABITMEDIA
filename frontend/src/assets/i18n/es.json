@@ -4,13 +4,26 @@
     "email": "Email",
     "password": "Contraseña",
     "button": "Entrar",
-    "noAccount": "¿No tienes cuenta? Regístrate"
+    "noAccount": "¿No tienes cuenta? Regístrate",
+    "success": "¡Inicio de sesión exitoso!",
+    "error": "Credenciales inválidas o error de conexión.",
+    "userNotFound": "Usuario no encontrado.",
+    "forbidden": "No tienes permisos para acceder.",
+    "conflict": "Conflicto de credenciales.",
+    "serviceUnavailable": "Servicio de autenticación no disponible."
   },
   "register": {
     "title": "Registro",
     "email": "Email",
     "password": "Contraseña",
     "button": "Registrarse",
-    "hasAccount": "¿Ya tienes cuenta? Inicia sesión"
+    "hasAccount": "¿Ya tienes cuenta? Inicia sesión",
+    "success": "¡Registro exitoso!",
+    "error": "Error al registrar usuario.",
+    "userExists": "El usuario ya existe. Usa otro correo.",
+    "forbidden": "No tienes permisos para registrar usuarios.",
+    "serviceUnavailable": "El servicio de registro no está disponible.",
+    "invalidPassword": "La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número.",
+    "invalidEmail": "El usuario debe ser un email válido."
   }
 }
