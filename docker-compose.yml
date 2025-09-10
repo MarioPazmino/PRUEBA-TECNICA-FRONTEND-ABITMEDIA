@@ -1,0 +1,22 @@
+version: '3.8'
+services:
+  backend:
+    image: openjdk:24-jdk
+    container_name: prueba-backend
+    working_dir: /app
+    volumes:
+      - ./backend/prueba.jar:/app/prueba.jar
+    ports:
+      - "8080:8080"
+    command: ["java", "-jar", "/app/prueba.jar"]
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    image: prueba-frontend
+    container_name: prueba-frontend
+    ports:
+      - "4200:80"
+    depends_on:
+      - backend
