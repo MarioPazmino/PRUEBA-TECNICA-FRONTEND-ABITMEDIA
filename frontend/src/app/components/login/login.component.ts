@@ -60,17 +60,19 @@ export class LoginComponent {
       },
       error: (err) => {
         this.success.set('');
+        let errorMsg = '';
         if (err.status === 401) {
-          this.error.set(this.translate.instant('login.error'));
+          errorMsg = this.translate.instant('login.error');
         } else if (err.status === 403) {
-          this.error.set(this.translate.instant('login.forbidden'));
+          errorMsg = this.translate.instant('login.forbidden');
         } else if (err.status === 404) {
-          this.error.set(this.translate.instant('login.serviceUnavailable'));
+          errorMsg = this.translate.instant('login.serviceUnavailable');
         } else if (err.status === 409) {
-          this.error.set(this.translate.instant('login.conflict'));
+          errorMsg = this.translate.instant('login.conflict');
         } else {
-          this.error.set(this.translate.instant('login.error'));
+          errorMsg = this.translate.instant('login.error');
         }
+        this.error.set(errorMsg);
         this.loading.set(false);
       }
     });

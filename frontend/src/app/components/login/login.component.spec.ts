@@ -16,6 +16,11 @@ describe('LoginComponent', () => {
     }).compileComponents();
     fixture = TestBed.createComponent(LoginComponent);
     component = fixture.componentInstance;
+    // Set language to Spanish for tests
+    const translateService = fixture.debugElement.injector.get<any>('TranslateService', null) || (component as any).translate;
+    if (translateService && typeof translateService.use === 'function') {
+      translateService.use('es');
+    }
     fixture.detectChanges();
   });
 
@@ -80,7 +85,8 @@ describe('LoginComponent', () => {
     component.password.set('1234');
     component.login();
     expect(component.loading()).toBe(false);
-    expect(component.error()).toBe('Credenciales inválidas o error de conexión');
+    const expectedError = (component as any).translate.instant('login.error');
+    expect(component.error()).toBe(expectedError);
     expect(mockAuthService.login).toHaveBeenCalled();
   });
 });

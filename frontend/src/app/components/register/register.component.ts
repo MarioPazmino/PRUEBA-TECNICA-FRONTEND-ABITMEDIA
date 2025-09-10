@@ -37,7 +37,15 @@ export class RegisterComponent {
   }
 
   constructor() {
-  }
+      effect(() => {
+        if (this.error()) {
+          setTimeout(() => this.error.set(''), 3000);
+        }
+        if (this.success()) {
+          setTimeout(() => this.success.set(''), 3000);
+        }
+      });
+    }
 
   register() {
     // Validaciones previas
@@ -64,15 +72,19 @@ export class RegisterComponent {
         this.password.set('');
       },
       error: (err: any) => {
+        let errorMsg = '';
         if (err.status === 409) {
-          this.error.set(this.translate.instant('register.userExists'));
+          errorMsg = this.translate.instant('register.userExists');
         } else if (err.status === 401) {
-          this.error.set(this.translate.instant('register.forbidden'));
+          errorMsg = this.translate.instant('register.forbidden');
         } else if (err.status === 404) {
-          this.error.set(this.translate.instant('register.serviceUnavailable'));
+          errorMsg = this.translate.instant('register.serviceUnavailable');
+        } else if (!this.username().match(/^\S+@\S+\.\S+$/)) {
+          errorMsg = this.translate.instant('register.invalidEmail');
         } else {
-          this.error.set(this.translate.instant('register.error'));
+          errorMsg = this.translate.instant('register.error');
         }
+        this.error.set(errorMsg);
         this.loading.set(false);
       }
     });
