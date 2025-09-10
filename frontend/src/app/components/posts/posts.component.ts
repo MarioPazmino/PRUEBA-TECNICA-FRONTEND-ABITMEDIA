@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { PostService } from '../../services/post.service';
 import { postsSignal } from '../../signals/posts.signal';
 import { Post } from '../../models/post.model';
+import { authState } from '../../signals/auth.signal';
 
 @Component({
   selector: 'app-posts',
@@ -20,6 +21,7 @@ export class PostsComponent {
   editId: number | null = null;
   editTitle = '';
   editContent = '';
+  loadingPost = false;
 
   constructor() {
     effect(() => {
@@ -29,16 +31,30 @@ export class PostsComponent {
 
   loadPosts() {
     this.postService.getPosts().subscribe(response => {
-      this.posts.set(response.data);
+      // Si el backend no envía createdAt, ordena por id descendente (nuevos arriba)
+      const sorted = [...response.data].sort((a, b) => {
+        if (a.createdAt && b.createdAt) {
+          return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+        }
+        return b.id - a.id;
+      });
+      this.posts.set(sorted);
     });
   }
 
   createPost() {
     if (!this.title || !this.content) return;
-    this.postService.createPost({ title: this.title, content: this.content, authorUsername: 'Usuario' }).subscribe(post => {
-      this.posts.set([post, ...this.posts()]);
-      this.title = '';
-      this.content = '';
+    this.loadingPost = true;
+    this.postService.createPost({ title: this.title, content: this.content, authorUsername: authState().username }).subscribe({
+      next: post => {
+        this.title = '';
+        this.content = '';
+        this.loadPosts();
+        this.loadingPost = false;
+      },
+      error: () => {
+        this.loadingPost = false;
+      }
     });
   }
 
@@ -68,5 +84,9 @@ export class PostsComponent {
     this.editId = null;
     this.editTitle = '';
     this.editContent = '';
+  }
+
+  trackById(index: number, post: Post) {
+    return post.id;
   }
 }
