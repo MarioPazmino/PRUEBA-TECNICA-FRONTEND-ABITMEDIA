@@ -3,6 +3,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { TranslateService } from '@ngx-translate/core';
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { AuthService } from '../../services/auth.service';
@@ -32,6 +33,7 @@ export class LoginComponent {
 
   private authService = inject(AuthService);
   private translate = inject(TranslateService);
+  private router = inject(Router) as Router;
 
   constructor() {
     // Effect signal para mostrar errores
@@ -65,6 +67,7 @@ autoClearSuccess() {
         this.error.set('');
         this.success.set(this.translate.instant('login.success'));
         this.loading.set(false);
+    this.router.navigate(['/posts']);
       },
       error: (err) => {
         this.success.set('');

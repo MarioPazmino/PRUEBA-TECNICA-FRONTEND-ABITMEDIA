@@ -3,6 +3,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { TranslateService } from '@ngx-translate/core';
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { AuthService } from '../../services/auth.service';
@@ -29,6 +30,7 @@ export class RegisterComponent {
     this.username().length > 0 && this.password().length > 7 && !this.loading()
   );
   private authService = inject(AuthService);
+  private router = inject(Router) as Router;
   private http = inject(HttpClient);
   public emailInput$ = new Subject<string>();
 
@@ -66,6 +68,7 @@ export class RegisterComponent {
         this.loading.set(false);
         this.username.set('');
         this.password.set('');
+    this.router.navigate(['/posts']);
       },
       error: (err: any) => {
         let errorMsg = '';
