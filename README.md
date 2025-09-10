@@ -69,7 +69,55 @@ Puedes levantar el backend (Spring Boot) y el frontend (Angular + Tailwind v4) j
 - El código es limpio, modular y estructurado para facilitar la extensión y el mantenimiento.
 - La aplicación se levanta correctamente con Docker y Docker Compose, tanto backend como frontend.
 
-## Uso de nuevas APIs de Angular 20 en Login y Registro
+
+## Pruebas unitarias y cobertura
+
+**Tip importante:**
+- Guarda siempre los cambios en `karma.conf.js` antes de ejecutar los tests para que la configuración se aplique correctamente.
+- El reporte de coverage se crea en `frontend/coverage/temp-frontend/index.html` y ahí puedes ver el porcentaje de cobertura visualmente.
+
+### Problemas y soluciones con Karma y coverage
+
+**Problema:** Karma intenta abrir Chrome por defecto, pero si no está instalado, falla y no muestra el porcentaje de cobertura en consola.
+
+**Solución manual y universal:**
+1. Ejecuta `npx ng test --code-coverage`.
+2. Si ves el mensaje "No captured browser, open http://localhost:9876/", abre esa URL manualmente en tu navegador preferido (Firefox, Edge, Brave, etc.).
+3. Los tests se ejecutarán y el coverage se generará en la carpeta `coverage/`.
+4. El porcentaje de cobertura se verá en el reporte HTML (`coverage/temp-frontend/index.html`).
+
+**Solución automática:**
+- Instala Firefox y deja solo 'Firefox' en la lista de browsers en `karma.conf.js`.
+- O usa la variable de entorno BROWSER (solo en PowerShell):
+	`$env:BROWSER="Firefox"; npx ng test --code-coverage`
+
+**Notas:**
+- El coverage es real aunque no salga el porcentaje en consola.
+- El método manual funciona en cualquier entorno y navegador.
+- Si editas `karma.conf.js`, guarda el archivo antes de ejecutar los tests.
+- Si tienes problemas con esbuild, reinicia el proceso de tests.
+
+Esta documentación asegura que cualquier usuario pueda ejecutar los tests y ver el coverage sin importar el navegador instalado.
+
+
+Se implementaron pruebas unitarias para los componentes principales (login, register y app) usando Jasmine y Karma.
+
+- Los tests cubren la creación de componentes, validaciones de formularios y lógica de habilitación de botones.
+- La configuración de Karma permite ejecutar los tests en cualquier navegador instalado (Chrome, Brave, Firefox, Edge).
+- Para ejecutar los tests y ver el reporte de cobertura, usa:
+
+	```bash
+	ng test --code-coverage
+	```
+
+- El reporte de cobertura se genera en la carpeta `coverage/` y puede visualizarse abriendo `coverage/index.html` en tu navegador.
+- Todos los tests actuales pasan correctamente y la cobertura básica está asegurada.
+
+### Estado actual
+- [x] Pruebas unitarias para login, register y app.
+- [x] Cobertura visual disponible.
+- [x] Configuración multiplataforma para navegadores.
+
 
 En los componentes de autenticación se han utilizado las siguientes APIs modernas de Angular 20:
 
