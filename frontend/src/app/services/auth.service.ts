@@ -4,6 +4,10 @@ import { RegisterRequest, LoginRequest, AuthResponse } from '../models/auth.mode
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
+  checkEmailExists(email: string) {
+    // Ajusta el endpoint según tu backend
+    return this.http.get<boolean>(`${this.apiUrl}/exists?email=${encodeURIComponent(email)}`);
+  }
   private apiUrl = '/api/auth';
 
   constructor(private http: HttpClient) {}

@@ -5,19 +5,26 @@
     <form (ngSubmit)="register()" autocomplete="off" class="space-y-4">
       <div>
   <label for="username" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ 'register.email' | translate }}</label>
-  <input id="username" type="text" class="mt-1 block w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 p-2 text-gray-900 dark:text-white focus:ring-2 focus:ring-green-500 focus:outline-none transition-all duration-200" [placeholder]="'register.email' | translate" [value]="username()" (input)="username.set($event.target.value)" name="username" required autocomplete="username">
+  <input id="username" type="text" class="mt-1 block w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 p-2 text-gray-900 dark:text-white focus:ring-2 focus:ring-green-500 focus:outline-none transition-all duration-200" [placeholder]="'register.email' | translate" [value]="username()" (input)="username.set($event.target.value); emailInput$.next($event.target.value)" name="username" required autocomplete="username">
       </div>
       <div>
   <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ 'register.password' | translate }}</label>
-  <input id="password" type="password" class="mt-1 block w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 p-2 text-gray-900 dark:text-white focus:ring-2 focus:ring-green-500 focus:outline-none transition-all duration-200" [placeholder]="'register.password' | translate" [value]="password()" (input)="password.set($event.target.value)" name="password" required autocomplete="new-password">
+  <div class="relative">
+    <input id="password" [type]="showPassword ? 'text' : 'password'" class="mt-1 block w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 p-2 pr-10 text-gray-900 dark:text-white focus:ring-2 focus:ring-green-500 focus:outline-none transition-all duration-200" [placeholder]="'register.password' | translate" [value]="password()" (input)="password.set($event.target.value)" name="password" required autocomplete="new-password">
+    <button type="button" class="absolute inset-y-0 right-0 flex items-center px-2" (click)="showPassword = !showPassword" tabindex="-1">
+      <svg *ngIf="!showPassword" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
+      <svg *ngIf="showPassword" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.477 0-8.268-2.943-9.542-7a9.978 9.978 0 012.042-3.362M6.634 6.634A9.978 9.978 0 0112 5c4.477 0 8.268 2.943 9.542 7a9.978 9.978 0 01-4.293 5.255M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3l18 18" /></svg>
+    </button>
+  </div>
       </div>
       <button type="submit" class="w-full py-2 rounded-lg bg-green-600 hover:bg-green-700 active:bg-green-800 text-white font-semibold shadow-md transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed" [disabled]="!canRegister() || loading()">
         <span *ngIf="!loading()">{{ 'register.button' | translate }}</span>
         <span *ngIf="loading()" class="flex items-center justify-center gap-2"><svg class="animate-spin h-5 w-5 text-white" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path></svg>Procesando...</span>
       </button>
     </form>
-    <div *ngIf="error()" class="mt-4 text-red-500 text-center animate-fade-in">{{ error() }}</div>
-    <div *ngIf="success()" class="mt-4 text-green-500 text-center animate-fade-in">{{ success() }}</div>
+    <app-notification *ngIf="error()" [type]="'error'" [msg]="error()"></app-notification>
+    <app-notification *ngIf="success()" [type]="'success'" [msg]="success()"></app-notification>
+
     <div class="mt-6 text-center">
   <button [routerLink]="['/login']" class="text-green-500 hover:underline font-medium">{{ 'register.hasAccount' | translate }}</button>
     </div>
