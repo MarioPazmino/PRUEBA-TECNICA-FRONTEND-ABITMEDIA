@@ -31,10 +31,6 @@ export class RegisterComponent {
   private authService = inject(AuthService);
   private http = inject(HttpClient);
   public emailInput$ = new Subject<string>();
-  // Método público para validación en vivo de email
-  public checkEmailExists() {
-    this.emailInput$.next(this.username());
-  }
 
   constructor() {
       effect(() => {
@@ -79,8 +75,6 @@ export class RegisterComponent {
           errorMsg = this.translate.instant('register.forbidden');
         } else if (err.status === 404) {
           errorMsg = this.translate.instant('register.serviceUnavailable');
-        } else if (!this.username().match(/^\S+@\S+\.\S+$/)) {
-          errorMsg = this.translate.instant('register.invalidEmail');
         } else {
           errorMsg = this.translate.instant('register.error');
         }
