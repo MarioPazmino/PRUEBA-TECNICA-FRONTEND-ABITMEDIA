@@ -56,6 +56,67 @@ Puedes levantar el backend (Spring Boot) y el frontend (Angular + Tailwind v4) j
 
 ---
 
+## Estructura del Proyecto
+
+### Arquitectura General
+```
+PRUEBA-TECNICA-FRONTEND-ABITMEDIA/
+├── backend/
+│   ├── prueba.jar              # Backend Spring Boot
+│   └── README.md               # Documentación backend
+├── frontend/
+│   ├── src/
+│   │   ├── app/
+│   │   │   ├── components/     # Componentes standalone
+│   │   │   │   ├── posts/      # Gestión de posts (CRUD)
+│   │   │   │   ├── comments/   # Sistema de comentarios
+│   │   │   │   ├── header/     # Navegación principal
+│   │   │   │   ├── notification/ # Alertas globales
+│   │   │   │   ├── not-found/  # Página 404
+│   │   │   │   ├── login/      # Autenticación
+│   │   │   │   └── register/   # Registro de usuarios
+│   │   │   ├── services/       # Servicios Angular
+│   │   │   │   ├── auth.service.ts
+│   │   │   │   ├── post.service.ts
+│   │   │   │   └── comment.service.ts
+│   │   │   ├── signals/        # Estado reactivo (Angular 20)
+│   │   │   │   ├── auth.signal.ts
+│   │   │   │   ├── posts.signal.ts
+│   │   │   │   ├── comments.signal.ts
+│   │   │   │   └── notification.signal.ts
+│   │   │   ├── models/         # Interfaces TypeScript
+│   │   │   │   ├── user.model.ts
+│   │   │   │   ├── post.model.ts
+│   │   │   │   └── comment.model.ts
+│   │   │   ├── i18n.providers.ts # Configuración i18n
+│   │   │   ├── language-selector.component.ts
+│   │   │   └── app.ts          # Componente raíz
+│   │   └── assets/
+│   │       └── i18n/           # Archivos de traducción
+│   │           ├── es.json     # Español
+│   │           └── en.json     # Inglés
+│   ├── coverage/               # Reportes de cobertura
+│   ├── Dockerfile              # Container frontend
+│   ├── tailwind.config.js      # Configuración Tailwind v4
+│   ├── .postcssrc.json         # PostCSS para Tailwind
+│   ├── karma.conf.js           # Configuración tests
+│   └── package.json            # Dependencias npm
+├── docker-compose.yml          # Orquestación completa
+└── README.md                   # Esta documentación
+```
+
+### Tecnologías Implementadas
+
+- **Frontend**: Angular 20 + Tailwind CSS v4 + TypeScript
+- **Backend**: Spring Boot + Java + REST API
+- **Base de Datos**: Integrada en Spring Boot
+- **Contenedores**: Docker + Docker Compose
+- **Testing**: Jasmine + Karma (99.7% coverage)
+- **i18n**: ngx-translate v17+ (ES/EN)
+- **Estado**: Angular Signals (reactivo)
+
+---
+
 ## Autenticación: Login y Registro
 
 ### Estado actual
