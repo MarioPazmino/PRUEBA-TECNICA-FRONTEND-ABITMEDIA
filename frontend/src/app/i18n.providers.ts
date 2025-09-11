@@ -5,11 +5,11 @@ import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
 export const i18nProviders = [
   importProvidersFrom(
     TranslateModule.forRoot({
-      fallbackLang: 'es',
+      fallbackLang: 'es'
     })
   ),
   ...provideTranslateHttpLoader({
-    prefix: './assets/i18n/',
+    prefix: '/assets/i18n/',
     suffix: '.json'
   })
 ];

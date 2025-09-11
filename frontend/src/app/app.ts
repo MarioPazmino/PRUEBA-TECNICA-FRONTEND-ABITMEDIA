@@ -27,7 +27,10 @@ export class App {
   }
 
   constructor(private translate: TranslateService, private router: Router) {
-    this.currentLang = translate.currentLang || translate.getDefaultLang() || 'es';
+    // Configurar idioma por defecto
+    this.translate.use('es');
+    this.currentLang = 'es';
+    
     try {
       const injector = inject(EnvironmentInjector);
       runInInjectionContext(injector, () => {
