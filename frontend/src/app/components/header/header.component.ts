@@ -16,17 +16,22 @@ import { notificationSignal } from '../../signals/notification.signal';
 export class HeaderComponent {
   authState = authState;
   private translate = inject(TranslateService);
+  loading = false;
   constructor(private authService: AuthService, private router: Router) {}
 
   logout() {
+    if (this.loading) return;
+    this.loading = true;
     this.authService.logout().subscribe({
       next: () => {
         authState.set({ username: '', token: null });
         notificationSignal.set({ type: 'success', message: this.translate.instant('header.logoutSuccess') });
         this.router.navigate(['/login']);
+        this.loading = false;
       },
       error: () => {
         notificationSignal.set({ type: 'error', message: this.translate.instant('header.logoutError') });
+        this.loading = false;
       }
     });
   }

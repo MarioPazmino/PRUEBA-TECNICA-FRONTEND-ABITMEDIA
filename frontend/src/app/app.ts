@@ -22,6 +22,10 @@ export class App {
     return !!authState().token;
   }
 
+  isLoggedInValue(state: { username: string; token: string | null }) {
+    return !!state.token;
+  }
+
   constructor(private translate: TranslateService, private router: Router) {
     this.currentLang = translate.currentLang || translate.getDefaultLang() || 'es';
     try {
@@ -29,9 +33,10 @@ export class App {
       runInInjectionContext(injector, () => {
         // Limpiar notificación al cambiar de ruta
         effect(() => {
-          this.router.events.subscribe(() => {
+          const sub = this.router.events.subscribe(() => {
             notificationSignal.set(null);
           });
+          return () => sub.unsubscribe();
         });
         // Limpiar notificación al cambiar de usuario
         effect(() => {
@@ -52,5 +57,9 @@ export class App {
   onLangChange(lang: string) {
     this.currentLang = lang;
     this.translate.use(lang);
+  }
+
+  changeLang(lang: string) {
+    this.onLangChange(lang);
   }
 }

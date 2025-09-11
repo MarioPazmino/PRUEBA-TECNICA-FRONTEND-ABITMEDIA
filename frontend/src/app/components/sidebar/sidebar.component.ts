@@ -20,6 +20,7 @@ export class SidebarComponent {
   @Input() currentLang: string = 'es';
   @Output() langChange = new EventEmitter<string>();
   sidebarOpen = false;
+  loading = false;
 
   private translate = inject(TranslateService);
   constructor(private authService: AuthService, private router: Router) {}
@@ -29,14 +30,18 @@ export class SidebarComponent {
   }
 
   logout() {
+    if (this.loading) return;
+    this.loading = true;
     this.authService.logout().subscribe({
       next: () => {
         authState.set({ username: '', token: null });
         notificationSignal.set({ type: 'success', message: this.translate.instant('sidebar.logoutSuccess') });
         this.router.navigate(['/login']);
+        this.loading = false;
       },
       error: () => {
         notificationSignal.set({ type: 'error', message: this.translate.instant('sidebar.logoutError') });
+        this.loading = false;
       }
     });
   }
