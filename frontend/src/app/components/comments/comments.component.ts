@@ -77,10 +77,20 @@ export class CommentsComponent {
 
   updateComment() {
     if (this.editingId == null) return;
-    this.commentService.updateComment(this.postId, this.editingId, this.editContent).subscribe(updated => {
-      this.comments.set(this.comments().map(c => c.id === updated.id ? updated : c));
-      this.editingId = null;
-      this.editContent = '';
+    this.commentService.updateComment(this.postId, this.editingId, this.editContent).subscribe({
+      next: () => {
+        this.loadComments();
+        this.editingId = null;
+        this.editContent = '';
+        notificationSignal.set({ type: 'success', message: 'Comentario editado correctamente.' });
+        setTimeout(() => notificationSignal.set(null), 2000);
+      },
+      error: err => {
+        let msg = 'Error al editar el comentario.';
+        if (err?.error?.message) msg = err.error.message;
+        notificationSignal.set({ type: 'error', message: msg });
+        setTimeout(() => notificationSignal.set(null), 2500);
+      }
     });
   }
 

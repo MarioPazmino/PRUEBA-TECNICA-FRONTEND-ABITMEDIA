@@ -18,8 +18,11 @@
           </button>
         </div>
       </div>
-      <div *ngIf="editingId === comment.id" class="mt-2 flex gap-2">
-        <input [(ngModel)]="editContent" class="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 p-2 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none transition" />
+      <div *ngIf="editingId === comment.id" class="mt-2 flex gap-2 items-center">
+        <div class="relative w-full flex items-center">
+          <input [(ngModel)]="editContent" maxlength="300" class="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 p-2 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none transition pr-16" />
+          <span class="absolute right-4 top-1/2 -translate-y-1/2 text-xs text-gray-400 dark:text-gray-400 pointer-events-none select-none">{{ editContent.length }}/300</span>
+        </div>
         <button (click)="updateComment()" class="px-3 py-1 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold shadow transition">Guardar</button>
         <button (click)="editingId = null" class="px-3 py-1 rounded-lg bg-gray-400 hover:bg-gray-500 text-white font-semibold shadow transition">Cancelar</button>
       </div>
