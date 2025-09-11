@@ -98,8 +98,8 @@ export class PostsComponent {
   updatePost() {
     if (this.editId == null) return;
     this.postService.updatePost(this.editId, { title: this.editTitle, content: this.editContent }).subscribe(updated => {
-      this.posts.set(this.posts().map(p => p.id === updated.id ? updated : p));
       this.cancelEdit();
+      this.loadPosts();
     });
   }
 

@@ -46,15 +46,21 @@
         </div>
       </ng-container>
     </div>
-    <div *ngIf="editing" class="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
-      <div class="bg-white dark:bg-gray-900 p-6 rounded-2xl shadow w-full max-w-md border border-gray-200 dark:border-gray-700">
-        <h3 class="text-xl font-bold mb-4 text-blue-700 dark:text-blue-400">Editar Post</h3>
-        <form (ngSubmit)="updatePost()" class="flex flex-col gap-2">
-          <input [(ngModel)]="editTitle" name="editTitle" required class="mt-1 block w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 p-2 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-200" />
-          <textarea [(ngModel)]="editContent" name="editContent" required class="mt-1 block w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 p-2 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-200"></textarea>
-          <div class="flex gap-2 mt-2">
-            <button type="submit" class="bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition">Guardar</button>
-            <button type="button" (click)="cancelEdit()" class="bg-gray-300 dark:bg-gray-700 text-gray-700 dark:text-gray-200 py-2 rounded-lg">Cancelar</button>
+    <div *ngIf="editing" class="fixed inset-0 bg-transparent backdrop-blur-sm flex items-center justify-center z-50">
+      <div class="bg-gray-900/90 dark:bg-gray-900/90 p-8 rounded-2xl shadow-2xl w-full max-w-md border border-gray-700 dark:border-gray-800 flex flex-col items-center">
+        <h3 class="text-2xl font-extrabold mb-6 text-blue-500 dark:text-blue-400 text-center">Editar Post</h3>
+        <form (ngSubmit)="updatePost()" class="flex flex-col gap-4 w-full">
+          <div>
+            <input [(ngModel)]="editTitle" name="editTitle" required maxlength="100" placeholder="Título (máx 100)" class="block w-full rounded-lg border border-gray-700 bg-gray-800 p-3 text-blue-200 dark:text-blue-100 font-semibold focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-200" />
+            <!-- Contador oculto para el título, pero sigue el maxlength en el input -->
+          </div>
+          <div>
+            <textarea [(ngModel)]="editContent" name="editContent" required maxlength="2000" placeholder="Contenido (máx 2000)" class="block w-full rounded-lg border border-gray-700 bg-gray-800 p-3 text-blue-200 dark:text-blue-100 font-normal focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-200 resize-none min-h-[80px]"></textarea>
+            <div class="text-xs text-gray-400 mt-1 text-right">{{ editContent.length || 0 }}/2000 caracteres</div>
+          </div>
+          <div class="flex gap-3 mt-2 justify-end">
+            <button type="submit" class="px-5 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-bold shadow transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed" [disabled]="!editTitle || !editContent">Guardar</button>
+            <button type="button" (click)="cancelEdit()" class="px-5 py-2 rounded-lg bg-gray-600 hover:bg-gray-700 text-gray-200 font-semibold shadow transition-all duration-200">Cancelar</button>
           </div>
         </form>
       </div>
