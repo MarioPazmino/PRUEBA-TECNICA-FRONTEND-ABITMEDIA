@@ -1,10 +1,12 @@
 import { Component, effect, signal, inject } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { NotificationComponent } from '../notification/notification.component';
 import { CommentsComponent } from '../comments/comments.component';
 import { notificationSignal } from '../../signals/notification.signal';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { TranslateModule } from '@ngx-translate/core';
 import { PostService } from '../../services/post.service';
 import { postsSignal } from '../../signals/posts.signal';
 import { Post } from '../../models/post.model';
@@ -13,7 +15,7 @@ import { authState } from '../../signals/auth.signal';
 @Component({
   selector: 'app-posts',
   standalone: true,
-  imports: [CommonModule, FormsModule, NotificationComponent, CommentsComponent],
+  imports: [CommonModule, FormsModule, NotificationComponent, CommentsComponent, TranslateModule],
   templateUrl: './posts.component.html',
   animations: [
     trigger('postAnim', [
@@ -45,6 +47,7 @@ export class PostsComponent {
     return authState().username;
   }
   private postService = inject(PostService);
+  private translate = inject(TranslateService);
   posts = postsSignal;
   title = '';
   content = '';
@@ -83,7 +86,7 @@ export class PostsComponent {
         this.content = '';
         this.createdPostId = post.id;
         this.posts.set([post, ...this.posts()]);
-        notificationSignal.set({ type: 'success', message: '¡Post creado exitosamente!' });
+  notificationSignal.set({ type: 'success', message: this.translate.instant('posts.created') });
         setTimeout(() => {
           this.createdPostId = null;
           this.loadPosts();
@@ -92,9 +95,9 @@ export class PostsComponent {
         this.loadingPost = false;
       },
       error: (err) => {
-        let msg = 'Error al crear el post.';
-        if (err?.error?.message) msg = err.error.message;
-        notificationSignal.set({ type: 'error', message: msg });
+  let msg = this.translate.instant('posts.errorCreate');
+  if (err?.error?.message) msg = err.error.message;
+  notificationSignal.set({ type: 'error', message: msg });
         setTimeout(() => notificationSignal.set(null), 2500);
         this.loadingPost = false;
       }
@@ -112,15 +115,15 @@ export class PostsComponent {
     if (this.editId == null) return;
     this.postService.updatePost(this.editId, { title: this.editTitle, content: this.editContent }).subscribe({
       next: updated => {
-        notificationSignal.set({ type: 'success', message: '¡Post editado exitosamente!' });
+  notificationSignal.set({ type: 'success', message: this.translate.instant('posts.edited') });
         this.cancelEdit();
         this.loadPosts();
         setTimeout(() => notificationSignal.set(null), 2000);
       },
       error: err => {
-        let msg = 'Error al editar el post.';
-        if (err?.error?.message) msg = err.error.message;
-        notificationSignal.set({ type: 'error', message: msg });
+  let msg = this.translate.instant('posts.errorEdit');
+  if (err?.error?.message) msg = err.error.message;
+  notificationSignal.set({ type: 'error', message: msg });
         setTimeout(() => notificationSignal.set(null), 2500);
       }
     });
@@ -130,13 +133,13 @@ export class PostsComponent {
     this.postService.deletePost(id).subscribe({
       next: () => {
         this.posts.set(this.posts().filter(p => p.id !== id));
-        notificationSignal.set({ type: 'success', message: '¡Post eliminado exitosamente!' });
+  notificationSignal.set({ type: 'success', message: this.translate.instant('posts.deleted') });
         setTimeout(() => notificationSignal.set(null), 2000);
       },
       error: (err) => {
-        let msg = 'Error al eliminar el post.';
-        if (err?.error?.message) msg = err.error.message;
-        notificationSignal.set({ type: 'error', message: msg });
+  let msg = this.translate.instant('posts.errorDelete');
+  if (err?.error?.message) msg = err.error.message;
+  notificationSignal.set({ type: 'error', message: msg });
         setTimeout(() => notificationSignal.set(null), 2500);
       }
     });

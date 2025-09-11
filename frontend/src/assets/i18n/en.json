@@ -26,4 +26,25 @@
     "invalidPassword": "Password must have at least 8 characters, one uppercase, one lowercase and one number.",
     "invalidEmail": "Email must be valid."
   }
+  ,
+  "posts": {
+    "title": "Posts",
+    "create": "Create Post",
+    "edit": "Edit Post",
+    "contentPlaceholder": "Content (max 2000)",
+    "titlePlaceholder": "Title (max 100)",
+    "noPosts": "No posts yet.",
+    "created": "Post created successfully!",
+    "edited": "Post edited successfully!",
+    "deleted": "Post deleted successfully!",
+    "errorCreate": "Error creating post.",
+    "errorEdit": "Error editing post.",
+    "errorDelete": "Error deleting post.",
+    "author": "By",
+    "editBtn": "Edit",
+    "deleteBtn": "Delete",
+    "saveBtn": "Save",
+    "cancelBtn": "Cancel",
+    "chars": "characters"
+  }
 }

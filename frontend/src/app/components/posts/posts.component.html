@@ -1,36 +1,36 @@
 <app-notification *ngIf="notificationSignal()" [type]="notificationSignal()?.type ?? 'success'" [msg]="notificationSignal()?.message ?? ''"></app-notification>
 <div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-purple-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 transition-colors duration-500 animate-fade-in mt-0 md:mt-0" style="margin-top:0">
   <div class="max-w-2xl w-full p-4 md:p-8 mx-2 bg-white dark:bg-gray-900 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-800 animate-fade-in flex flex-col justify-center items-center posts-main-wrapper">
-    <h1 class="text-3xl font-extrabold text-center mb-6 text-gray-900 dark:text-white tracking-tight">Posts</h1>
+  <h1 class="text-3xl font-extrabold text-center mb-6 text-gray-900 dark:text-white tracking-tight">{{ 'posts.title' | translate }}</h1>
     <form (ngSubmit)="createPost()" autocomplete="off" class="space-y-4 w-full mb-6">
       <div>
-        <input [(ngModel)]="title" name="title" required maxlength="100" placeholder="Título (máx 100)" class="mt-1 block w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 p-2 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-200" />
+  <input [(ngModel)]="title" name="title" required maxlength="100" [placeholder]="'posts.titlePlaceholder' | translate" class="mt-1 block w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 p-2 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-200" />
       </div>
       <div>
-  <textarea [(ngModel)]="content" name="content" required maxlength="2000" placeholder="Contenido (máx 2000)" class="mt-1 block w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 p-2 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-200 resize-y min-h-[80px] max-h-[300px]"></textarea>
-  <div class="text-xs text-gray-500 dark:text-gray-400 mt-1 text-left">{{ content.length }}/2000 caracteres</div>
+  <textarea [(ngModel)]="content" name="content" required maxlength="2000" [placeholder]="'posts.contentPlaceholder' | translate" class="mt-1 block w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 p-2 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-200 resize-y min-h-[80px] max-h-[300px]"></textarea>
+  <div class="text-xs text-gray-500 dark:text-gray-400 mt-1 text-left">{{ content.length }}/2000 {{ 'posts.chars' | translate }}</div>
       </div>
   <button type="submit" class="w-full py-2 rounded-lg bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-semibold shadow-md transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed" [disabled]="loadingPost || !title || !content">
-        <span *ngIf="!loadingPost">Crear Post</span>
+        <span *ngIf="!loadingPost">{{ 'posts.create' | translate }}</span>
         <span *ngIf="loadingPost" class="flex items-center justify-center gap-2">
           <svg class="animate-spin h-5 w-5 text-white" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path></svg>
           Procesando...
         </span>
       </button>
     </form>
-    <div *ngIf="posts().length === 0" class="text-gray-500">No hay posts aún.</div>
+  <div *ngIf="posts().length === 0" class="text-gray-500">{{ 'posts.noPosts' | translate }}</div>
   <div *ngFor="let post of posts(); trackBy: trackById" [@postAnim] [ngClass]="{'animate-pop': post.id === createdPostId}" class="w-full bg-gray-50 dark:bg-gray-800 p-4 mb-4 rounded-xl shadow border border-gray-200 dark:border-gray-700 animate-fade-in">
       <ng-container *ngIf="post.id !== createdPostId || post.title">
         <div class="flex justify-between items-center">
           <h2 class="text-lg font-semibold text-blue-700 dark:text-blue-400 break-words max-w-[80%] overflow-x-auto" style="word-break:break-word;">{{ post.title }}</h2>
           <div>
             <ng-container *ngIf="post.authorUsername === currentUsername">
-              <button (click)="editPost(post)" class="p-1 rounded hover:bg-yellow-100 dark:hover:bg-yellow-900 mr-2" title="Editar">
+              <button (click)="editPost(post)" class="p-1 rounded hover:bg-yellow-100 dark:hover:bg-yellow-900 mr-2" [title]="'posts.editBtn' | translate">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 text-yellow-600 dark:text-yellow-400">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 3.487a2.1 2.1 0 1 1 2.97 2.97L7.5 18.79l-4 1 1-4 12.362-12.303z" />
                 </svg>
               </button>
-              <button (click)="deletePost(post.id)" class="p-1 rounded hover:bg-red-100 dark:hover:bg-red-900" title="Eliminar">
+              <button (click)="deletePost(post.id)" class="p-1 rounded hover:bg-red-100 dark:hover:bg-red-900" [title]="'posts.deleteBtn' | translate">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 text-red-600 dark:text-red-400">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M6 7h12M9 7V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3m-7 0v10a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2V7" />
                 </svg>
@@ -39,7 +39,7 @@
           </div>
         </div>
   <p class="mt-2 text-gray-700 dark:text-gray-200 break-words max-w-full overflow-x-auto" style="word-break:break-word; white-space:pre-line;">{{ post.content }}</p>
-        <small class="text-gray-400 dark:text-gray-500">Por: {{ post.authorUsername }} | {{ post.createdAt | date:'short' }}</small>
+  <small class="text-gray-400 dark:text-gray-500">{{ 'posts.author' | translate }}: {{ post.authorUsername }} | {{ post.createdAt | date:'short' }}</small>
     <app-comments [postId]="post.id"></app-comments>
       </ng-container>
       <ng-container *ngIf="post.id === createdPostId && !post.title">
@@ -51,25 +51,25 @@
     </div>
     <div *ngIf="editing" class="fixed inset-0 bg-transparent backdrop-blur-sm flex items-center justify-center z-50">
   <div [@modalAnim] class="bg-gray-900/90 dark:bg-gray-900/90 p-8 px-4 sm:px-8 rounded-2xl shadow-2xl w-full max-w-xs sm:max-w-md mx-[2px] sm:mx-auto border border-gray-700 dark:border-gray-800 flex flex-col items-center">
-        <h3 class="text-2xl font-extrabold mb-6 text-blue-500 dark:text-blue-400 text-center">Editar Post</h3>
+  <h3 class="text-2xl font-extrabold mb-6 text-blue-500 dark:text-blue-400 text-center">{{ 'posts.edit' | translate }}</h3>
         <form (ngSubmit)="updatePost()" class="flex flex-col gap-4 w-full">
           <div>
-            <input [(ngModel)]="editTitle" name="editTitle" required maxlength="100" placeholder="Título (máx 100)" class="block w-full rounded-lg border border-gray-700 bg-gray-800 p-3 text-blue-200 dark:text-blue-100 font-semibold focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-200" />
+            <input [(ngModel)]="editTitle" name="editTitle" required maxlength="100" [placeholder]="'posts.titlePlaceholder' | translate" class="block w-full rounded-lg border border-gray-700 bg-gray-800 p-3 text-blue-200 dark:text-blue-100 font-semibold focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-200" />
           </div>
           <div>
             <div class="relative">
-              <textarea [(ngModel)]="editContent" name="editContent" required maxlength="2000" placeholder="Contenido (máx 2000)" 
+              <textarea [(ngModel)]="editContent" name="editContent" required maxlength="2000" [placeholder]="'posts.contentPlaceholder' | translate"
                 class="block w-full rounded-lg border border-gray-700 bg-gray-800 p-3 text-blue-200 dark:text-blue-100 font-normal focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-200 resize-y min-h-[100px] max-h-[220px] sm:min-h-[120px] sm:max-h-[300px] overflow-auto whitespace-pre-line break-words"
                 style="word-break:break-word;">
               </textarea>
               <div class="absolute bottom-2 right-3 text-xs text-gray-400 bg-gray-900/80 px-2 py-0.5 rounded select-none pointer-events-none">
-                {{ editContent.length || 0 }}/2000 caracteres
+                {{ editContent.length || 0 }}/2000 {{ 'posts.chars' | translate }}
               </div>
             </div>
           </div>
           <div class="flex gap-3 mt-2 justify-end">
-            <button type="submit" class="px-5 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-bold shadow transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed" [disabled]="!editTitle || !editContent">Guardar</button>
-            <button type="button" (click)="cancelEdit()" class="px-5 py-2 rounded-lg bg-gray-600 hover:bg-gray-700 text-gray-200 font-semibold shadow transition-all duration-200">Cancelar</button>
+            <button type="submit" class="px-5 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-bold shadow transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed" [disabled]="!editTitle || !editContent">{{ 'posts.saveBtn' | translate }}</button>
+            <button type="button" (click)="cancelEdit()" class="px-5 py-2 rounded-lg bg-gray-600 hover:bg-gray-700 text-gray-200 font-semibold shadow transition-all duration-200">{{ 'posts.cancelBtn' | translate }}</button>
           </div>
         </form>
       </div>
