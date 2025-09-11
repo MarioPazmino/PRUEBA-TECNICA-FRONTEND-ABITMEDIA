@@ -76,4 +76,10 @@
     "logoutSuccess": "Logout successful.",
     "logoutError": "Error logging out."
   }
+  ,
+  "notFound": {
+    "title": "Page not found",
+    "redirect": "You will be redirected to login in 5 seconds...",
+    "button": "Go to login now"
+  }
 }

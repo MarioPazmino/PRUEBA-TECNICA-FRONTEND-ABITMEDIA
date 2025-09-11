@@ -76,4 +76,10 @@
     "logoutSuccess": "Sesión cerrada correctamente.",
     "logoutError": "Error al cerrar sesión."
   }
+  ,
+  "notFound": {
+    "title": "Página no encontrada",
+    "redirect": "Serás redirigido al login en 5 segundos...",
+    "button": "Ir al login ahora"
+  }
 }
