@@ -1,3 +1,10 @@
+@keyframes fadeOut {
+	0% { opacity: 1; transform: scale(1); }
+	100% { opacity: 0; transform: scale(0.95); }
+}
+.animate-fade-out {
+	animation: fadeOut 0.5s cubic-bezier(0.4,0,0.2,1);
+}
 :host {
 	--bright-blue: oklch(51.01% 0.274 263.83);
 	--electric-violet: oklch(53.18% 0.28 296.97);

@@ -1,4 +1,5 @@
 import { Component, effect, signal, inject } from '@angular/core';
+import { trigger, transition, style, animate } from '@angular/animations';
 import { NotificationComponent } from '../notification/notification.component';
 import { notificationSignal } from '../../signals/notification.signal';
 import { CommonModule } from '@angular/common';
@@ -12,9 +13,21 @@ import { authState } from '../../signals/auth.signal';
   selector: 'app-posts',
   standalone: true,
   imports: [CommonModule, FormsModule, NotificationComponent],
-  templateUrl: './posts.component.html'
+  templateUrl: './posts.component.html',
+  animations: [
+    trigger('postAnim', [
+      transition(':enter', [
+        style({ opacity: 0, transform: 'translateY(-24px) scale(0.98)' }),
+        animate('350ms cubic-bezier(0.4,0,0.2,1)', style({ opacity: 1, transform: 'translateY(0) scale(1)' }))
+      ]),
+      transition(':leave', [
+        animate('500ms cubic-bezier(0.4,0,0.2,1)', style({ opacity: 0, transform: 'scale(0.95)' }))
+      ])
+    ])
+  ]
 })
 export class PostsComponent {
+  deletedPostId: number | null = null;
   get notificationSignal() {
     return notificationSignal;
   }
@@ -51,22 +64,12 @@ export class PostsComponent {
   createPost() {
     if (!this.title || !this.content) return;
     this.loadingPost = true;
-    const tempId = Date.now();
-    const placeholder: Post = {
-      id: tempId,
-      title: '',
-      content: '',
-      authorUsername: '',
-      createdAt: '',
-    };
-    this.createdPostId = tempId;
-    this.posts.set([placeholder, ...this.posts()]);
     this.postService.createPost({ title: this.title, content: this.content, authorUsername: authState().username }).subscribe({
       next: post => {
         this.title = '';
         this.content = '';
         this.createdPostId = post.id;
-        this.posts.set([post, ...this.posts().filter(p => p.id !== tempId)]);
+        this.posts.set([post, ...this.posts()]);
         notificationSignal.set({ type: 'success', message: '¡Post creado exitosamente!' });
         setTimeout(() => {
           this.createdPostId = null;
@@ -76,7 +79,6 @@ export class PostsComponent {
         this.loadingPost = false;
       },
       error: (err) => {
-        this.posts.set(this.posts().filter(p => p.id !== tempId));
         let msg = 'Error al crear el post.';
         if (err?.error?.message) msg = err.error.message;
         notificationSignal.set({ type: 'error', message: msg });
@@ -102,8 +104,18 @@ export class PostsComponent {
   }
 
   deletePost(id: number) {
-    this.postService.deletePost(id).subscribe(() => {
-      this.posts.set(this.posts().filter(p => p.id !== id));
+    this.postService.deletePost(id).subscribe({
+      next: () => {
+        this.posts.set(this.posts().filter(p => p.id !== id));
+        notificationSignal.set({ type: 'success', message: '¡Post eliminado exitosamente!' });
+        setTimeout(() => notificationSignal.set(null), 2000);
+      },
+      error: (err) => {
+        let msg = 'Error al eliminar el post.';
+        if (err?.error?.message) msg = err.error.message;
+        notificationSignal.set({ type: 'error', message: msg });
+        setTimeout(() => notificationSignal.set(null), 2500);
+      }
     });
   }
 
