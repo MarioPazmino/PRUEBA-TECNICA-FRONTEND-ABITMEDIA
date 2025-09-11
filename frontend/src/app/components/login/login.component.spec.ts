@@ -3,6 +3,12 @@ import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testin
 import * as AuthSignal from '../../signals/auth.signal';
 import { FormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
+import { provideHttpClient } from '@angular/common/http';
+
+// DummyComponent para rutas requeridas en los tests
+import { Component } from '@angular/core';
+@Component({selector: 'app-dummy', template: ''})
+class DummyComponent {}
 import { TranslateModule } from '@ngx-translate/core';
 
 describe('LoginComponent', () => {
@@ -41,8 +47,19 @@ describe('LoginComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [LoginComponent, FormsModule, RouterTestingModule, TranslateModule.forRoot()],
-      // declarations: [LoginComponent],
+      imports: [
+        LoginComponent,
+        FormsModule,
+        RouterTestingModule.withRoutes([
+          { path: 'posts', component: DummyComponent },
+          { path: 'login', component: DummyComponent }
+        ]),
+        TranslateModule.forRoot(),
+        DummyComponent
+      ],
+      providers: [
+        provideHttpClient()
+      ]
     }).compileComponents();
     fixture = TestBed.createComponent(LoginComponent);
     component = fixture.componentInstance;

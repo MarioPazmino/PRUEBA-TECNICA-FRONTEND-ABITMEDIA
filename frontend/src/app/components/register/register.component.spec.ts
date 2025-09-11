@@ -3,6 +3,10 @@ import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testin
 import { FormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
+import { Component } from '@angular/core';
+
+@Component({ template: '' })
+class DummyComponent {}
 
 describe('RegisterComponent', () => {
   let component: RegisterComponent;
@@ -10,7 +14,15 @@ describe('RegisterComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RegisterComponent, FormsModule, RouterTestingModule, TranslateModule.forRoot()]
+      imports: [
+        RegisterComponent,
+        FormsModule,
+        RouterTestingModule.withRoutes([
+          { path: 'posts', component: DummyComponent },
+          { path: 'login', component: DummyComponent }
+        ]),
+        TranslateModule.forRoot()
+      ]
     }).compileComponents();
     fixture = TestBed.createComponent(RegisterComponent);
     component = fixture.componentInstance;

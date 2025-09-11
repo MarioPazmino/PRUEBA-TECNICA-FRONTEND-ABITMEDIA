@@ -1,7 +1,9 @@
 
 import { TestBed } from '@angular/core/testing';
+import { provideHttpClient } from '@angular/common/http';
 import { App } from './app';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { Router } from '@angular/router';
 
 describe('App', () => {
   let fixture: any;
@@ -11,6 +13,9 @@ describe('App', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [App, TranslateModule.forRoot()],
+      providers: [
+        provideHttpClient()
+      ]
     }).compileComponents();
     fixture = TestBed.createComponent(App);
     app = fixture.componentInstance;
@@ -24,7 +29,8 @@ describe('App', () => {
 
   it('should set currentLang from translate service on init', () => {
   spyOnProperty(translate, 'currentLang', 'get').and.returnValue('en');
-  const newApp = new App(translate);
+  const mockRouter = {} as Router;
+  const newApp = new App(translate, mockRouter);
   expect(newApp.currentLang).toBe('en');
   });
 

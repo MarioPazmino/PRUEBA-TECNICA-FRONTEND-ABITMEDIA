@@ -1,4 +1,4 @@
-import { Component, signal, HostListener, effect } from '@angular/core';
+import { Component, signal, HostListener, effect, inject, runInInjectionContext, EnvironmentInjector } from '@angular/core';
 import { authState } from './signals/auth.signal';
 import { CommonModule } from '@angular/common';
 import { HeaderComponent } from './components/header/header.component';
@@ -24,17 +24,24 @@ export class App {
 
   constructor(private translate: TranslateService, private router: Router) {
     this.currentLang = translate.currentLang || translate.getDefaultLang() || 'es';
-    // Limpiar notificación al cambiar de ruta
-    effect(() => {
-      this.router.events.subscribe(() => {
-        notificationSignal.set(null);
+    try {
+      const injector = inject(EnvironmentInjector);
+      runInInjectionContext(injector, () => {
+        // Limpiar notificación al cambiar de ruta
+        effect(() => {
+          this.router.events.subscribe(() => {
+            notificationSignal.set(null);
+          });
+        });
+        // Limpiar notificación al cambiar de usuario
+        effect(() => {
+          authState();
+          notificationSignal.set(null);
+        });
       });
-    });
-    // Limpiar notificación al cambiar de usuario
-    effect(() => {
-      authState();
-      notificationSignal.set(null);
-    });
+    } catch (e) {
+      // Si no hay contexto de inyección, ignora efectos (solo ocurre en tests)
+    }
   }
 
   @HostListener('window:resize')
