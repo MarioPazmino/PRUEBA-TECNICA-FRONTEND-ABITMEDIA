@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { CommentsComponent } from './comments.component';
 import { CommentService } from '../../services/comment.service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
@@ -138,6 +138,42 @@ describe('CommentsComponent', () => {
     
     expect(notificationSignal.set).toHaveBeenCalledWith({ type: 'error', message: 'Server error' });
   });
+
+  it('should clear success notification after timeout when adding comment', fakeAsync(() => {
+    spyOn(notificationSignal, 'set');
+    spyOn(translate, 'instant').and.returnValue('Comment created');
+    commentService.createComment.and.returnValue(of({ id: 3, content: 'New test comment', authorUsername: 'user1', postId: 1, createdAt: '2023-01-03' }));
+    
+    component.newComment = 'New test comment';
+    component.addComment();
+    
+    // Check that success notification is set
+    expect(notificationSignal.set).toHaveBeenCalledWith({ type: 'success', message: 'Comment created' });
+    
+    // Advance time by 2000ms to trigger setTimeout
+    tick(2000);
+    
+    // Check that notification is cleared
+    expect(notificationSignal.set).toHaveBeenCalledWith(null);
+  }));
+
+  it('should clear error notification after timeout when adding comment fails', fakeAsync(() => {
+    spyOn(notificationSignal, 'set');
+    spyOn(translate, 'instant').and.returnValue('Error adding comment');
+    commentService.createComment.and.returnValue(throwError({ error: { message: 'Server error' } }));
+    
+    component.newComment = 'Test comment';
+    component.addComment();
+    
+    // Check that error notification is set
+    expect(notificationSignal.set).toHaveBeenCalledWith({ type: 'error', message: 'Server error' });
+    
+    // Advance time by 2500ms to trigger setTimeout
+    tick(2500);
+    
+    // Check that notification is cleared
+    expect(notificationSignal.set).toHaveBeenCalledWith(null);
+  }));
 
   it('should start edit mode', () => {
     // Reset component state and set known comments
@@ -306,4 +342,76 @@ describe('CommentsComponent', () => {
     expect(component.trackById(999, comment1)).toBe(comment1.id);
     expect(component.trackById(0, comment2)).toBe(comment2.id);
   });
+
+  it('should clear success notification after timeout when updating comment', fakeAsync(() => {
+    spyOn(notificationSignal, 'set');
+    spyOn(translate, 'instant').and.returnValue('Comment updated');
+    commentService.updateComment.and.returnValue(of({ id: 1, content: 'Updated content', authorUsername: 'user1', postId: 1, createdAt: '2023-01-01' }));
+    
+    component.editingId = 1;
+    component.editContent = 'Updated content';
+    component.updateComment();
+    
+    // Check that success notification is set
+    expect(notificationSignal.set).toHaveBeenCalledWith({ type: 'success', message: 'Comment updated' });
+    
+    // Advance time by 2000ms to trigger setTimeout
+    tick(2000);
+    
+    // Check that notification is cleared
+    expect(notificationSignal.set).toHaveBeenCalledWith(null);
+  }));
+
+  it('should clear error notification after timeout when updating comment fails', fakeAsync(() => {
+    spyOn(notificationSignal, 'set');
+    spyOn(translate, 'instant').and.returnValue('Error updating');
+    commentService.updateComment.and.returnValue(throwError({ error: { message: 'Update failed' } }));
+    
+    component.editingId = 1;
+    component.updateComment();
+    
+    // Check that error notification is set
+    expect(notificationSignal.set).toHaveBeenCalledWith({ type: 'error', message: 'Update failed' });
+    
+    // Advance time by 2500ms to trigger setTimeout
+    tick(2500);
+    
+    // Check that notification is cleared
+    expect(notificationSignal.set).toHaveBeenCalledWith(null);
+  }));
+
+  it('should clear success notification after timeout when deleting comment', fakeAsync(() => {
+    spyOn(notificationSignal, 'set');
+    spyOn(translate, 'instant').and.returnValue('Comment deleted');
+    commentService.deleteComment.and.returnValue(of(undefined));
+    
+    component.comments.set([...mockComments]);
+    component.deleteComment(1);
+    
+    // Check that success notification is set
+    expect(notificationSignal.set).toHaveBeenCalledWith({ type: 'success', message: 'Comment deleted' });
+    
+    // Advance time by 2000ms to trigger setTimeout
+    tick(2000);
+    
+    // Check that notification is cleared
+    expect(notificationSignal.set).toHaveBeenCalledWith(null);
+  }));
+
+  it('should clear error notification after timeout when deleting comment fails', fakeAsync(() => {
+    spyOn(notificationSignal, 'set');
+    spyOn(translate, 'instant').and.returnValue('Error deleting');
+    commentService.deleteComment.and.returnValue(throwError({ error: { message: 'Delete failed' } }));
+    
+    component.deleteComment(1);
+    
+    // Check that error notification is set
+    expect(notificationSignal.set).toHaveBeenCalledWith({ type: 'error', message: 'Delete failed' });
+    
+    // Advance time by 2500ms to trigger setTimeout
+    tick(2500);
+    
+    // Check that notification is cleared
+    expect(notificationSignal.set).toHaveBeenCalledWith(null);
+  }));
 });

@@ -134,6 +134,25 @@ describe('PostsComponent', () => {
     expect(component.loadingPost).toBeFalse();
   });
 
+  it('should clear error notification after timeout when creating post fails', fakeAsync(() => {
+    spyOn(notificationSignal, 'set');
+    spyOn(translate, 'instant').and.returnValue('Error creating post');
+    postService.createPost.and.returnValue(throwError({ error: { message: 'Server error' } }));
+    
+    component.title = 'Test';
+    component.content = 'Test content';
+    component.createPost();
+    
+    // Check that error notification is set
+    expect(notificationSignal.set).toHaveBeenCalledWith({ type: 'error', message: 'Server error' });
+    
+    // Advance time by 2500ms to trigger setTimeout
+    tick(2500);
+    
+    // Check that notification is cleared
+    expect(notificationSignal.set).toHaveBeenCalledWith(null);
+  }));
+
   it('should start edit mode', () => {
     const post = mockPosts[0];
     component.editPost(post);
@@ -273,6 +292,98 @@ describe('PostsComponent', () => {
     component.createPost();
     
     tick(1500);
+    expect(notificationSignal.set).toHaveBeenCalledWith(null);
+  }));
+
+  it('should clear success notification after timeout when creating post', fakeAsync(() => {
+    spyOn(notificationSignal, 'set');
+    spyOn(translate, 'instant').and.returnValue('Post created');
+    postService.createPost.and.returnValue(of({ id: 3, title: 'New Post', content: 'Content', authorUsername: 'testuser', createdAt: '2023-01-03' }));
+    
+    component.title = 'New Post';
+    component.content = 'Content';
+    component.createPost();
+    
+    // Check that success notification is set
+    expect(notificationSignal.set).toHaveBeenCalledWith({ type: 'success', message: 'Post created' });
+    
+    // Advance time by 2500ms to trigger setTimeout
+    tick(2500);
+    
+    // Check that notification is cleared
+    expect(notificationSignal.set).toHaveBeenCalledWith(null);
+  }));
+
+  it('should clear success notification after timeout when updating post', fakeAsync(() => {
+    spyOn(notificationSignal, 'set');
+    spyOn(translate, 'instant').and.returnValue('Post updated');
+    postService.updatePost.and.returnValue(of({ id: 1, title: 'Updated', content: 'Updated content', authorUsername: 'testuser', createdAt: '2023-01-01' }));
+    
+    component.editId = 1;
+    component.editTitle = 'Updated';
+    component.editContent = 'Updated content';
+    component.updatePost();
+    
+    // Check that success notification is set
+    expect(notificationSignal.set).toHaveBeenCalledWith({ type: 'success', message: 'Post updated' });
+    
+    // Advance time by 2000ms to trigger setTimeout
+    tick(2000);
+    
+    // Check that notification is cleared
+    expect(notificationSignal.set).toHaveBeenCalledWith(null);
+  }));
+
+  it('should clear error notification after timeout when updating post fails', fakeAsync(() => {
+    spyOn(notificationSignal, 'set');
+    spyOn(translate, 'instant').and.returnValue('Error updating');
+    postService.updatePost.and.returnValue(throwError({ error: { message: 'Update failed' } }));
+    
+    component.editId = 1;
+    component.updatePost();
+    
+    // Check that error notification is set
+    expect(notificationSignal.set).toHaveBeenCalledWith({ type: 'error', message: 'Update failed' });
+    
+    // Advance time by 2500ms to trigger setTimeout
+    tick(2500);
+    
+    // Check that notification is cleared
+    expect(notificationSignal.set).toHaveBeenCalledWith(null);
+  }));
+
+  it('should clear success notification after timeout when deleting post', fakeAsync(() => {
+    spyOn(notificationSignal, 'set');
+    spyOn(translate, 'instant').and.returnValue('Post deleted');
+    postService.deletePost.and.returnValue(of(undefined));
+    
+    component.posts.set([...mockPosts]);
+    component.deletePost(1);
+    
+    // Check that success notification is set
+    expect(notificationSignal.set).toHaveBeenCalledWith({ type: 'success', message: 'Post deleted' });
+    
+    // Advance time by 2000ms to trigger setTimeout
+    tick(2000);
+    
+    // Check that notification is cleared
+    expect(notificationSignal.set).toHaveBeenCalledWith(null);
+  }));
+
+  it('should clear error notification after timeout when deleting post fails', fakeAsync(() => {
+    spyOn(notificationSignal, 'set');
+    spyOn(translate, 'instant').and.returnValue('Error deleting');
+    postService.deletePost.and.returnValue(throwError({ error: { message: 'Delete failed' } }));
+    
+    component.deletePost(1);
+    
+    // Check that error notification is set
+    expect(notificationSignal.set).toHaveBeenCalledWith({ type: 'error', message: 'Delete failed' });
+    
+    // Advance time by 2500ms to trigger setTimeout
+    tick(2500);
+    
+    // Check that notification is cleared
     expect(notificationSignal.set).toHaveBeenCalledWith(null);
   }));
 });
