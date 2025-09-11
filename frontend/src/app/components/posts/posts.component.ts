@@ -40,6 +40,9 @@ export class PostsComponent {
   get notificationSignal() {
     return notificationSignal;
   }
+  get currentUsername() {
+    return authState().username;
+  }
   private postService = inject(PostService);
   posts = postsSignal;
   title = '';
