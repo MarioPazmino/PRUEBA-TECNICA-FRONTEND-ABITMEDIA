@@ -26,6 +26,7 @@ import { notificationSignal } from '../../signals/notification.signal';
   ]
 })
 export class CommentsComponent {
+  orderDesc = true;
   @Input() postId!: number;
   comments = signal<Comment[]>([]);
   newComment = '';
@@ -42,14 +43,20 @@ export class CommentsComponent {
 
   loadComments() {
     this.commentService.getComments(this.postId).subscribe(res => {
+      let arr: Comment[] = [];
       if (Array.isArray(res.data)) {
-        this.comments.set(res.data);
+        arr = res.data;
       } else if (res.data && typeof res.data === 'object' && 'comments' in res.data && Array.isArray((res.data as any).comments)) {
-        this.comments.set((res.data as any).comments);
-      } else {
-        this.comments.set([]);
+        arr = (res.data as any).comments;
       }
+      arr = arr.sort((a, b) => this.orderDesc ? new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime() : new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+      this.comments.set(arr);
     });
+  }
+
+  toggleOrder() {
+    this.orderDesc = !this.orderDesc;
+    this.comments.set([...this.comments()].sort((a, b) => this.orderDesc ? new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime() : new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()));
   }
 
   addComment() {
