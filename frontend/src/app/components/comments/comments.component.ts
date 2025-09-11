@@ -32,6 +32,11 @@ export class CommentsComponent {
   newComment = '';
   editingId: number | null = null;
   editContent = '';
+  // Cancela la edición
+  cancelEdit() {
+    this.editingId = null;
+    this.editContent = '';
+  }
   private commentService = inject(CommentService);
   trackById(index: number, comment: Comment) {
     return comment.id;
