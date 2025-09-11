@@ -69,6 +69,100 @@ Puedes levantar el backend (Spring Boot) y el frontend (Angular + Tailwind v4) j
 - El código es limpio, modular y estructurado para facilitar la extensión y el mantenimiento.
 - La aplicación se levanta correctamente con Docker y Docker Compose, tanto backend como frontend.
 
+## Gestión de Posts: CRUD Completo
+
+### Estado actual
+
+- Se implementó el componente Posts con funcionalidad CRUD completa usando Angular 20 y las nuevas APIs (`signal`, `inject`, `effect`).
+- El diseño es completamente responsivo con enfoque mobile-first, adaptándose desde 320px hasta dispositivos desktop usando Tailwind CSS v4.
+- Integración completa con backend mediante endpoints RESTful: GET, POST, PUT y DELETE con autenticación JWT.
+- Sistema de notificaciones automáticas con timeout para feedback inmediato al usuario en operaciones de crear, editar y eliminar posts.
+- Animaciones fluidas para entrada/salida de posts y modales usando Angular Animations con transiciones CSS3 personalizadas.
+- Validaciones en tiempo real con contador de caracteres (2000 max), botones deshabilitados hasta completar validación.
+- Autorización por rol: solo el autor de un post puede editarlo o eliminarlo, con controles de UI apropiados.
+- Estados de carga con spinners durante operaciones async para mejorar la experiencia de usuario.
+- Internacionalización (i18n) completa con ngx-translate para todos los textos y mensajes de error/éxito.
+
+## Sistema de Comentarios: Interacción Social
+
+### Estado actual
+
+- Se implementó el componente Comments como módulo reutilizable integrado en cada post, siguiendo las APIs modernas de Angular 20 (`signal`, `inject`).
+- El diseño es completamente responsivo con UI adaptativa que funciona tanto en desktop como móvil, usando botones contextuales que cambian según el viewport.
+- Funcionalidad CRUD completa para comentarios: crear, editar inline, eliminar y listar con ordenamiento dinámico (ascendente/descendente).
+- Sistema de autorización granular: solo el autor de cada comentario puede editarlo o eliminarlo, con verificación de permisos en tiempo real.
+- Edición inline con modo de edición activable/cancelable, incluyendo validaciones en tiempo real y contador de caracteres (300 max).
+- Ordenamiento dinámico con toggle visual para cambiar entre orden cronológico ascendente y descendente de comentarios.
+- Animaciones suaves de entrada/salida usando Angular Animations con transiciones personalizadas para mejorar la UX.
+- Integración completa con sistema de notificaciones global para feedback inmediato en operaciones de crear, editar y eliminar.
+- Internacionalización (i18n) completa con textos traducibles y mensajes de error contextuales usando ngx-translate.
+
+## Componentes Reutilizables: Arquitectura Modular
+
+### Estado actual
+
+- Se desarrollaron componentes standalone reutilizables que mejoran la experiencia de usuario y mantienen consistencia en toda la aplicación.
+- **Header Component**: Navegación principal con autenticación, logout seguro, selector de idioma y navegación responsiva entre secciones.
+- **Notification Component**: Sistema global de alertas con animaciones CSS3, soporte para mensajes de éxito/error y timeout automático configurable.
+- **Not-Found Component**: Página 404 con redirección automática, diseño atractivo y mensajes traducibles para mejorar la navegación del usuario.
+- Todos los componentes siguen las nuevas APIs de Angular 20 (`signal`, `inject`) y son completamente standalone para máxima reutilización.
+- Diseño consistente con Tailwind CSS v4, dark mode integrado y responsive design que se adapta desde dispositivos móviles hasta desktop.
+- Integración completa con el sistema de internacionalización (i18n) para soporte multiidioma en toda la aplicación.
+
+## Requerimientos Adicionales (Plus): Implementación Completa
+
+### ✅ Internacionalización (i18n)
+
+- **Implementación completa** con ngx-translate v17+ usando las nuevas APIs de Angular 20 y configuración mediante providers.
+- **Archivos de traducción**: Español (es.json) e Inglés (en.json) en `/assets/i18n/` con todas las keys organizadas por módulos.
+- **Language Selector Component**: Selector de idioma reutilizable y minimalista integrado en header y sidebar con persistencia de preferencia.
+- **Providers configurados**: `i18n.providers.ts` con configuración optimizada para carga dinámica de traducciones.
+- **Cobertura total**: Todos los textos de la aplicación (formularios, mensajes, errores, botones, etc.) están traducidos y son reactivos al cambio de idioma.
+
+### ✅ Cobertura de Pruebas Unitarias (>80%)
+
+- **99.7% Coverage alcanzado**: Superando ampliamente el requerimiento mínimo del 80%.
+  - **99.7% Statements** (340/341)
+  - **98.24% Branches** (56/57)
+  - **99.12% Functions** (113/114)
+  - **100% Lines** (304/304)
+- **158 specs ejecutados** con 0 failures, cubriendo todos los componentes, servicios y casos edge.
+- **Tests comprehensivos**: Validación de formularios, manejo de errores, signals, effects, navegación, autenticación y operaciones CRUD.
+- **Configuración Karma optimizada**: Soporte multiplataforma para diferentes navegadores con reporte HTML detallado.
+
+
+
+## Uso de APIs de angular 20
+
+En los componentes de autenticación se han utilizado las siguientes APIs modernas de Angular 20:
+
+- **Standalone Components:** Login, Register y el selector de idioma son componentes standalone, lo que permite mayor modularidad y reutilización sin necesidad de NgModules.
+- **Signals:** Se usan signals para el manejo reactivo de estado en los formularios (ejemplo: username, password, loading, error, success), permitiendo una gestión eficiente y reactiva de los datos.
+- **inject():** Se utiliza la función inject para acceder a servicios como AuthService y TranslateService, siguiendo el patrón recomendado en Angular 20 para la inyección de dependencias.
+- **provideHttpClient():** El HttpClient se provee usando la nueva API de providers, facilitando la configuración global y el uso en servicios.
+- **provideRouter():** El enrutamiento se configura con la nueva API, permitiendo rutas standalone y layouts desacoplados.
+- **Ngx-translate v17+:** Integración con la nueva versión de ngx-translate para internacionalización, usando providers y loaders recomendados.
+- **Tailwind v4:** Todo el diseño y responsividad se logra con utilidades de Tailwind v4, integradas en los componentes Angular.
+
+Estas prácticas aseguran un código moderno, limpio y alineado con las recomendaciones actuales de Angular.
+
+
+### Estado actual
+- [x] Pruebas unitarias para login, register y app.
+- [x] Cobertura visual disponible.
+- [x] Configuración multiplataforma para navegadores.
+- [x] Diseño responsivo.
+- [x] Experiencia de usuario.
+- [x] Código limpio y bien estructurado.
+- [x] Componentes reutilizables.
+- [x] Uso adecuado de las tecnologías requeridas.
+- [x] Documentación clara.
+- [x] Uso de Docker para levantar la aplicación.
+- [x] UI/UX.
+- [x] Uso de las nuevas APIs de Angular 20 (ej. `signal`).
+### Plus
+- [x] Implementación de internacionalización (i18n).
+- [x] Cobertura de pruebas unitarias (al menos 80%).
 
 ## Pruebas unitarias y cobertura
 
@@ -113,29 +207,3 @@ Se implementaron pruebas unitarias para los componentes principales (login, regi
 - El reporte de cobertura se genera en la carpeta `coverage/` y puede visualizarse abriendo `coverage/index.html` en tu navegador.
 - Todos los tests actuales pasan correctamente y la cobertura básica está asegurada.
 
-### Estado actual
-- [x] Pruebas unitarias para login, register y app.
-- [x] Cobertura visual disponible.
-- [x] Configuración multiplataforma para navegadores.
-
-
-En los componentes de autenticación se han utilizado las siguientes APIs modernas de Angular 20:
-
-- **Standalone Components:** Login, Register y el selector de idioma son componentes standalone, lo que permite mayor modularidad y reutilización sin necesidad de NgModules.
-- **Signals:** Se usan signals para el manejo reactivo de estado en los formularios (ejemplo: username, password, loading, error, success), permitiendo una gestión eficiente y reactiva de los datos.
-- **inject():** Se utiliza la función inject para acceder a servicios como AuthService y TranslateService, siguiendo el patrón recomendado en Angular 20 para la inyección de dependencias.
-- **provideHttpClient():** El HttpClient se provee usando la nueva API de providers, facilitando la configuración global y el uso en servicios.
-- **provideRouter():** El enrutamiento se configura con la nueva API, permitiendo rutas standalone y layouts desacoplados.
-- **Ngx-translate v17+:** Integración con la nueva versión de ngx-translate para internacionalización, usando providers y loaders recomendados.
-- **Tailwind v4:** Todo el diseño y responsividad se logra con utilidades de Tailwind v4, integradas en los componentes Angular.
-
-Estas prácticas aseguran un código moderno, limpio y alineado con las recomendaciones actuales de Angular.
-
-### Pendiente
-
-- Finalizar la cobertura de pruebas unitarias (objetivo: 80%).
-- Documentar el resto de los módulos y componentes CRUD.
-- Mejorar la documentación técnica y de uso.
-
----
-**Documentación en progreso.**
