@@ -1,3 +1,4 @@
+<app-notification *ngIf="notificationSignal()" [type]="notificationSignal()?.type ?? 'success'" [msg]="notificationSignal()?.message ?? ''"></app-notification>
 <div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-purple-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 transition-colors duration-500 animate-fade-in">
   <div class="max-w-2xl w-full p-4 md:p-8 mx-2 bg-white dark:bg-gray-900 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-800 animate-fade-in flex flex-col justify-center items-center">
     <h1 class="text-3xl font-extrabold text-center mb-6 text-gray-900 dark:text-white tracking-tight">Posts</h1>
@@ -17,16 +18,24 @@
       </button>
     </form>
     <div *ngIf="posts().length === 0" class="text-gray-500">No hay posts aún.</div>
-    <div *ngFor="let post of posts(); trackBy: trackById" class="w-full bg-gray-50 dark:bg-gray-800 p-4 mb-4 rounded-xl shadow border border-gray-200 dark:border-gray-700 animate-fade-in">
-      <div class="flex justify-between items-center">
-        <h2 class="text-lg font-semibold text-blue-700 dark:text-blue-400">{{ post.title }}</h2>
-        <div>
-          <button (click)="editPost(post)" class="text-yellow-600 dark:text-yellow-400 hover:underline mr-2">Editar</button>
-          <button (click)="deletePost(post.id)" class="text-red-600 dark:text-red-400 hover:underline">Eliminar</button>
+    <div *ngFor="let post of posts(); trackBy: trackById" [ngClass]="{'animate-pop': post.id === createdPostId}" class="w-full bg-gray-50 dark:bg-gray-800 p-4 mb-4 rounded-xl shadow border border-gray-200 dark:border-gray-700 animate-fade-in">
+      <ng-container *ngIf="post.id !== createdPostId || post.title">
+        <div class="flex justify-between items-center">
+          <h2 class="text-lg font-semibold text-blue-700 dark:text-blue-400">{{ post.title }}</h2>
+          <div>
+            <button (click)="editPost(post)" class="text-yellow-600 dark:text-yellow-400 hover:underline mr-2">Editar</button>
+            <button (click)="deletePost(post.id)" class="text-red-600 dark:text-red-400 hover:underline">Eliminar</button>
+          </div>
         </div>
-      </div>
-      <p class="mt-2 text-gray-700 dark:text-gray-200">{{ post.content }}</p>
-      <small class="text-gray-400 dark:text-gray-500">Por: {{ post.authorUsername }} | {{ post.createdAt | date:'short' }}</small>
+        <p class="mt-2 text-gray-700 dark:text-gray-200">{{ post.content }}</p>
+        <small class="text-gray-400 dark:text-gray-500">Por: {{ post.authorUsername }} | {{ post.createdAt | date:'short' }}</small>
+      </ng-container>
+      <ng-container *ngIf="post.id === createdPostId && !post.title">
+        <div class="flex items-center justify-center h-16">
+          <svg class="animate-spin h-7 w-7 text-blue-600" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path></svg>
+          <span class="ml-3 text-blue-600 font-semibold">Creando post...</span>
+        </div>
+      </ng-container>
     </div>
     <div *ngIf="editing" class="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
       <div class="bg-white dark:bg-gray-900 p-6 rounded-2xl shadow w-full max-w-md border border-gray-200 dark:border-gray-700">
