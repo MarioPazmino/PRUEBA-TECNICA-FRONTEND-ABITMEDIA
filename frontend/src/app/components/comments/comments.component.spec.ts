@@ -36,6 +36,10 @@ describe('CommentsComponent', () => {
     commentService = TestBed.inject(CommentService) as jasmine.SpyObj<CommentService>;
     translate = TestBed.inject(TranslateService);
     
+    // Reset signals to clean state
+    AuthSignal.authState.set({ username: '', token: null });
+    notificationSignal.set(null);
+    
     component.postId = 1;
     
     // Mock default responses
@@ -81,12 +85,27 @@ describe('CommentsComponent', () => {
   });
 
   it('should sort comments by date descending', () => {
-    component.orderDesc = true;
+    // Set to false first, so toggleOrder will make it true (descending)
+    component.orderDesc = false;
     component.comments.set([...mockComments]);
-    component.toggleOrder(); // This will re-sort
+    component.toggleOrder(); // This will change orderDesc to true and sort descending
     
     const sorted = component.comments();
+    // In descending order, more recent date (2023-01-02) should come first
     expect(new Date(sorted[0].createdAt).getTime()).toBeGreaterThan(new Date(sorted[1].createdAt).getTime());
+    expect(component.orderDesc).toBeTrue();
+  });
+
+  it('should sort comments by date ascending', () => {
+    // Set to true first, so toggleOrder will make it false (ascending)
+    component.orderDesc = true;
+    component.comments.set([...mockComments]);
+    component.toggleOrder(); // This will change orderDesc to false and sort ascending
+    
+    const sorted = component.comments();
+    // In ascending order, older date (2023-01-01) should come first
+    expect(new Date(sorted[0].createdAt).getTime()).toBeLessThan(new Date(sorted[1].createdAt).getTime());
+    expect(component.orderDesc).toBeFalse();
   });
 
   it('should add comment successfully', () => {
@@ -121,11 +140,14 @@ describe('CommentsComponent', () => {
   });
 
   it('should start edit mode', () => {
-    // Set up component with mock comments first
-    component.comments.set(mockComments);
+    // Reset component state and set known comments
+    component.comments.set([...mockComments]);
     
-    const comment = mockComments[0]; // This is the comment with id: 1, content: 'Test comment 1'
-    component.startEdit(comment);
+    // Use a specific comment we know exists
+    const targetComment = mockComments.find(c => c.id === 1); // Get comment with id: 1
+    expect(targetComment).toBeDefined(); // Make sure it exists
+    
+    component.startEdit(targetComment!);
     
     expect(component.editingId).toBe(1);
     expect(component.editContent).toBe('Test comment 1');
@@ -199,26 +221,89 @@ describe('CommentsComponent', () => {
   });
 
   it('should check if user is owner', () => {
-    // Set auth state before testing
+    // Debug: First, let's see what we have by default
+    console.log('Initial auth state:', AuthSignal.authState());
+    console.log('mockComments[0].authorUsername:', mockComments[0].authorUsername);
+    console.log('mockComments[1].authorUsername:', mockComments[1].authorUsername);
+    
+    // Set auth state directly using the signal
     AuthSignal.authState.set({ username: 'user1', token: 'token123' });
-    fixture.detectChanges(); // Trigger change detection
     
-    // mockComments[0] has authorUsername: 'user1', so should be true
-    expect(component.isOwner(mockComments[0])).toBeTrue();
-    // mockComments[1] has authorUsername: 'user2', so should be false  
-    expect(component.isOwner(mockComments[1])).toBeFalse();
+    // Verify the signal was set correctly
+    const currentAuth = AuthSignal.authState();
+    console.log('After setting auth state:', currentAuth);
+    console.log('Auth username is:', currentAuth.username);
     
-    // Test with different user
+    // Test the comparison directly
+    console.log('Direct comparison mockComments[0]:', mockComments[0].authorUsername === currentAuth.username);
+    console.log('Direct comparison mockComments[1]:', mockComments[1].authorUsername === currentAuth.username);
+    
+    // Find the specific comments by authorUsername instead of relying on array index
+    const user1Comment = mockComments.find(c => c.authorUsername === 'user1');
+    const user2Comment = mockComments.find(c => c.authorUsername === 'user2');
+    
+    console.log('user1Comment:', user1Comment);
+    console.log('user2Comment:', user2Comment);
+    
+    // Test with user1 (should own user1's comment)
+    const isOwnerUser1 = component.isOwner(user1Comment!);
+    const isOwnerUser2 = component.isOwner(user2Comment!);
+    
+    console.log('isOwner result for user1Comment:', isOwnerUser1);
+    console.log('isOwner result for user2Comment:', isOwnerUser2);
+    
+    // user1 should own user1Comment but not user2Comment
+    expect(isOwnerUser1).toBeTrue();
+    expect(isOwnerUser2).toBeFalse();
+  });
+
+  it('should check if user is owner with different user', () => {
+    // Set auth state for user2
     AuthSignal.authState.set({ username: 'user2', token: 'token123' });
-    fixture.detectChanges();
     
-    // Now the results should be inverted
-    expect(component.isOwner(mockComments[0])).toBeFalse();
-    expect(component.isOwner(mockComments[1])).toBeTrue();
+    // Debug
+    const currentAuth = AuthSignal.authState();
+    console.log('Second test - auth state:', currentAuth);
+    console.log('Second test - username:', currentAuth.username);
+    
+    // Find the specific comments by authorUsername instead of relying on array index
+    const user1Comment = mockComments.find(c => c.authorUsername === 'user1');
+    const user2Comment = mockComments.find(c => c.authorUsername === 'user2');
+    
+    // Test with user2 (should own user2's comment)
+    const isOwnerUser1 = component.isOwner(user1Comment!);
+    const isOwnerUser2 = component.isOwner(user2Comment!);
+    
+    console.log('Second test - isOwnerUser1:', isOwnerUser1);
+    console.log('Second test - isOwnerUser2:', isOwnerUser2);
+    
+    // user2 should own user2Comment but not user1Comment
+    expect(isOwnerUser1).toBeFalse();
+    expect(isOwnerUser2).toBeTrue();
+  });
+
+  it('should check if user is owner with no auth', () => {
+    // Set auth state to empty
+    AuthSignal.authState.set({ username: '', token: null });
+    
+    // Test with no user (should own nothing)
+    const isOwner0 = component.isOwner(mockComments[0]);
+    const isOwner1 = component.isOwner(mockComments[1]);
+    
+    expect(isOwner0).toBeFalse();
+    expect(isOwner1).toBeFalse();
   });
 
   it('should track comments by id', () => {
-    const comment = mockComments[0];
-    expect(component.trackById(0, comment)).toBe(1);
+    const comment1 = mockComments[0];
+    const comment2 = mockComments[1];
+    
+    // The trackById function should return the comment's id, regardless of the index
+    expect(component.trackById(0, comment1)).toBe(comment1.id);
+    expect(component.trackById(1, comment2)).toBe(comment2.id);
+    
+    // Test with different indices to show it doesn't matter
+    expect(component.trackById(999, comment1)).toBe(comment1.id);
+    expect(component.trackById(0, comment2)).toBe(comment2.id);
   });
 });
