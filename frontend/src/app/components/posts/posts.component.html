@@ -7,7 +7,7 @@
         <input [(ngModel)]="title" name="title" required maxlength="100" placeholder="Título (máx 100)" class="mt-1 block w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 p-2 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-200" />
       </div>
       <div>
-  <textarea [(ngModel)]="content" name="content" required maxlength="2000" placeholder="Contenido (máx 2000)" class="mt-1 block w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 p-2 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-200"></textarea>
+  <textarea [(ngModel)]="content" name="content" required maxlength="2000" placeholder="Contenido (máx 2000)" class="mt-1 block w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 p-2 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-200 resize-y min-h-[80px] max-h-[300px]"></textarea>
   <div class="text-xs text-gray-500 dark:text-gray-400 mt-1 text-left">{{ content.length }}/2000 caracteres</div>
       </div>
   <button type="submit" class="w-full py-2 rounded-lg bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-semibold shadow-md transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed" [disabled]="loadingPost || !title || !content">
@@ -50,15 +50,22 @@
       </ng-container>
     </div>
     <div *ngIf="editing" class="fixed inset-0 bg-transparent backdrop-blur-sm flex items-center justify-center z-50">
-  <div [@modalAnim] class="bg-gray-900/90 dark:bg-gray-900/90 p-8 rounded-2xl shadow-2xl w-full max-w-md border border-gray-700 dark:border-gray-800 flex flex-col items-center">
+  <div [@modalAnim] class="bg-gray-900/90 dark:bg-gray-900/90 p-8 px-4 sm:px-8 rounded-2xl shadow-2xl w-full max-w-xs sm:max-w-md mx-[2px] sm:mx-auto border border-gray-700 dark:border-gray-800 flex flex-col items-center">
         <h3 class="text-2xl font-extrabold mb-6 text-blue-500 dark:text-blue-400 text-center">Editar Post</h3>
         <form (ngSubmit)="updatePost()" class="flex flex-col gap-4 w-full">
           <div>
             <input [(ngModel)]="editTitle" name="editTitle" required maxlength="100" placeholder="Título (máx 100)" class="block w-full rounded-lg border border-gray-700 bg-gray-800 p-3 text-blue-200 dark:text-blue-100 font-semibold focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-200" />
           </div>
           <div>
-            <textarea [(ngModel)]="editContent" name="editContent" required maxlength="2000" placeholder="Contenido (máx 2000)" class="block w-full rounded-lg border border-gray-700 bg-gray-800 p-3 text-blue-200 dark:text-blue-100 font-normal focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-200 resize-none min-h-[80px]"></textarea>
-            <div class="text-xs text-gray-400 mt-1 text-right">{{ editContent.length || 0 }}/2000 caracteres</div>
+            <div class="relative">
+              <textarea [(ngModel)]="editContent" name="editContent" required maxlength="2000" placeholder="Contenido (máx 2000)" 
+                class="block w-full rounded-lg border border-gray-700 bg-gray-800 p-3 text-blue-200 dark:text-blue-100 font-normal focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-200 resize-y min-h-[100px] max-h-[220px] sm:min-h-[120px] sm:max-h-[300px] overflow-auto whitespace-pre-line break-words"
+                style="word-break:break-word;">
+              </textarea>
+              <div class="absolute bottom-2 right-3 text-xs text-gray-400 bg-gray-900/80 px-2 py-0.5 rounded select-none pointer-events-none">
+                {{ editContent.length || 0 }}/2000 caracteres
+              </div>
+            </div>
           </div>
           <div class="flex gap-3 mt-2 justify-end">
             <button type="submit" class="px-5 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-bold shadow transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed" [disabled]="!editTitle || !editContent">Guardar</button>
