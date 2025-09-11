@@ -89,7 +89,7 @@ describe('RegisterComponent', () => {
 
   it('should show error for invalid password', fakeAsync(() => {
     component.username.set('test@example.com');
-    component.password.set('short'); // Invalid password
+    component.password.set('short'); 
     component.register();
     expect(component.error()).toBe((component as any).translate.instant('register.invalidPassword'));
   }));
