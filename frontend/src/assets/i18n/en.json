@@ -66,4 +66,14 @@
     "errorEdit": "Error editing comment.",
     "errorDelete": "Error deleting comment."
   }
+  ,
+  "header": {
+    "logoutSuccess": "Logout successful.",
+    "logoutError": "Error logging out."
+  }
+  ,
+  "sidebar": {
+    "logoutSuccess": "Logout successful.",
+    "logoutError": "Error logging out."
+  }
 }

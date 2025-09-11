@@ -1,16 +1,18 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, inject } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { authState } from '../../signals/auth.signal';
 import { notificationSignal } from '../../signals/notification.signal';
 import { CommonModule } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
 import { HeaderComponent } from '../header/header.component';
 import { LanguageSelectorComponent } from '../../language-selector.component';
 
 @Component({
   selector: 'app-sidebar',
   standalone: true,
-  imports: [CommonModule, HeaderComponent, LanguageSelectorComponent],
+  imports: [CommonModule, HeaderComponent, LanguageSelectorComponent, TranslateModule],
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.css']
 })
@@ -19,6 +21,7 @@ export class SidebarComponent {
   @Output() langChange = new EventEmitter<string>();
   sidebarOpen = false;
 
+  private translate = inject(TranslateService);
   constructor(private authService: AuthService, private router: Router) {}
 
   toggleSidebar() {
@@ -29,11 +32,11 @@ export class SidebarComponent {
     this.authService.logout().subscribe({
       next: () => {
         authState.set({ username: '', token: null });
-        notificationSignal.set({ type: 'success', message: 'Sesión cerrada correctamente.' });
+        notificationSignal.set({ type: 'success', message: this.translate.instant('sidebar.logoutSuccess') });
         this.router.navigate(['/login']);
       },
       error: () => {
-        notificationSignal.set({ type: 'error', message: 'Error al cerrar sesión.' });
+        notificationSignal.set({ type: 'error', message: this.translate.instant('sidebar.logoutError') });
       }
     });
   }

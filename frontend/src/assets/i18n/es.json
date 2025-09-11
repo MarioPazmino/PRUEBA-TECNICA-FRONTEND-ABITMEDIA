@@ -66,4 +66,14 @@
     "errorEdit": "Error al editar el comentario.",
     "errorDelete": "Error al eliminar el comentario."
   }
+  ,
+  "header": {
+    "logoutSuccess": "Sesión cerrada correctamente.",
+    "logoutError": "Error al cerrar sesión."
+  }
+  ,
+  "sidebar": {
+    "logoutSuccess": "Sesión cerrada correctamente.",
+    "logoutError": "Error al cerrar sesión."
+  }
 }
