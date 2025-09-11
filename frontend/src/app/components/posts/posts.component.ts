@@ -1,6 +1,7 @@
 import { Component, effect, signal, inject } from '@angular/core';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { NotificationComponent } from '../notification/notification.component';
+import { CommentsComponent } from '../comments/comments.component';
 import { notificationSignal } from '../../signals/notification.signal';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -12,7 +13,7 @@ import { authState } from '../../signals/auth.signal';
 @Component({
   selector: 'app-posts',
   standalone: true,
-  imports: [CommonModule, FormsModule, NotificationComponent],
+  imports: [CommonModule, FormsModule, NotificationComponent, CommentsComponent],
   templateUrl: './posts.component.html',
   animations: [
     trigger('postAnim', [

@@ -1,0 +1,21 @@
+<div class="mt-4">
+  <h3 class="text-md font-bold mb-2 text-blue-600">Comentarios</h3>
+  <div *ngFor="let comment of comments()" class="mb-3 p-3 rounded-xl bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 shadow-sm">
+    <div class="flex items-center justify-between">
+      <span class="text-gray-800 dark:text-gray-100 text-sm break-words max-w-[80%]">{{ comment.content }}</span>
+      <span class="text-xs text-gray-400 ml-2">{{ comment.authorUsername }} · {{ comment.createdAt | date:'short' }}</span>
+    </div>
+    <div *ngIf="isOwner(comment)" class="flex gap-2 mt-2">
+      <button (click)="startEdit(comment)" class="px-2 py-1 rounded-lg bg-yellow-100 dark:bg-yellow-900 text-yellow-700 dark:text-yellow-300 font-medium hover:bg-yellow-200 transition">Editar</button>
+      <button (click)="deleteComment(comment.id)" class="px-2 py-1 rounded-lg bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-300 font-medium hover:bg-red-200 transition">Eliminar</button>
+    </div>
+    <div *ngIf="editingId === comment.id" class="mt-2 flex gap-2">
+      <input [(ngModel)]="editContent" class="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 p-2 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none transition" />
+      <button (click)="updateComment()" class="px-3 py-1 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold shadow transition">Guardar</button>
+      <button (click)="editingId = null" class="px-3 py-1 rounded-lg bg-gray-400 hover:bg-gray-500 text-white font-semibold shadow transition">Cancelar</button>
+    </div>
+  </div>
+  <div class="mt-3 flex gap-2 items-center">
+    <input [(ngModel)]="newComment" maxlength="300" placeholder="Agregar comentario..." class="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 p-2 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none transition" />
+    <button (click)="addComment()" class="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold shadow transition disabled:opacity-50 disabled:cursor-not-allowed" [disabled]="!newComment.trim()">Comentar</button>
+  </div>
