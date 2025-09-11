@@ -4,12 +4,13 @@
     <h1 class="text-3xl font-extrabold text-center mb-6 text-gray-900 dark:text-white tracking-tight">Posts</h1>
     <form (ngSubmit)="createPost()" autocomplete="off" class="space-y-4 w-full mb-6">
       <div>
-        <input [(ngModel)]="title" name="title" required placeholder="Título" class="mt-1 block w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 p-2 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-200" />
+        <input [(ngModel)]="title" name="title" required maxlength="100" placeholder="Título (máx 100)" class="mt-1 block w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 p-2 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-200" />
       </div>
       <div>
-        <textarea [(ngModel)]="content" name="content" required placeholder="Contenido" class="mt-1 block w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 p-2 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-200"></textarea>
+  <textarea [(ngModel)]="content" name="content" required maxlength="2000" placeholder="Contenido (máx 2000)" class="mt-1 block w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 p-2 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-200"></textarea>
+  <div class="text-xs text-gray-500 dark:text-gray-400 mt-1 text-left">{{ content.length }}/2000 caracteres</div>
       </div>
-      <button type="submit" class="w-full py-2 rounded-lg bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-semibold shadow-md transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed" [disabled]="loadingPost">
+  <button type="submit" class="w-full py-2 rounded-lg bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-semibold shadow-md transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed" [disabled]="loadingPost || !title || !content">
         <span *ngIf="!loadingPost">Crear Post</span>
         <span *ngIf="loadingPost" class="flex items-center justify-center gap-2">
           <svg class="animate-spin h-5 w-5 text-white" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path></svg>
@@ -21,13 +22,13 @@
     <div *ngFor="let post of posts(); trackBy: trackById" [ngClass]="{'animate-pop': post.id === createdPostId}" class="w-full bg-gray-50 dark:bg-gray-800 p-4 mb-4 rounded-xl shadow border border-gray-200 dark:border-gray-700 animate-fade-in">
       <ng-container *ngIf="post.id !== createdPostId || post.title">
         <div class="flex justify-between items-center">
-          <h2 class="text-lg font-semibold text-blue-700 dark:text-blue-400">{{ post.title }}</h2>
+          <h2 class="text-lg font-semibold text-blue-700 dark:text-blue-400 break-words max-w-[80%] overflow-x-auto" style="word-break:break-word;">{{ post.title }}</h2>
           <div>
             <button (click)="editPost(post)" class="text-yellow-600 dark:text-yellow-400 hover:underline mr-2">Editar</button>
             <button (click)="deletePost(post.id)" class="text-red-600 dark:text-red-400 hover:underline">Eliminar</button>
           </div>
         </div>
-        <p class="mt-2 text-gray-700 dark:text-gray-200">{{ post.content }}</p>
+  <p class="mt-2 text-gray-700 dark:text-gray-200 break-words max-w-full overflow-x-auto" style="word-break:break-word; white-space:pre-line;">{{ post.content }}</p>
         <small class="text-gray-400 dark:text-gray-500">Por: {{ post.authorUsername }} | {{ post.createdAt | date:'short' }}</small>
       </ng-container>
       <ng-container *ngIf="post.id === createdPostId && !post.title">
