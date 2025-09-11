@@ -1,7 +1,14 @@
 
 # PRUEBA-TECNICA-FRONTEND-ABITMEDIA
 PRUEBA TECNICA FRONTEND ABITMEDIA
-docker-compose up --build
+
+🚨 AVISO IMPORTANTE - CONTACTO
+Si considera que esta prueba técnica cumple con los criterios requeridos y desea proceder con el proceso de evaluación, por favor comuníquese únicamente a través de:
+
+📧 Correo electrónico: mariopazmino78@gmail.com
+📱 WhatsApp: +593 989508266
+
+Nota: Debido a mi ubicación geográfica, no es posible atender llamadas telefónicas convencionales. Agradezco su comprensión y quedo atento a su contacto por los medios mencionados y muchas gracias por esta oportunidad.
 
 ## ¿Cómo levantar toda la aplicación?
 
