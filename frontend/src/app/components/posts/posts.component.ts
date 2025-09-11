@@ -23,6 +23,15 @@ import { authState } from '../../signals/auth.signal';
       transition(':leave', [
         animate('500ms cubic-bezier(0.4,0,0.2,1)', style({ opacity: 0, transform: 'scale(0.95)' }))
       ])
+    ]),
+    trigger('modalAnim', [
+      transition(':enter', [
+        style({ opacity: 0, transform: 'translateY(-20px) scale(0.98)' }),
+        animate('250ms cubic-bezier(0.4,0,0.2,1)', style({ opacity: 1, transform: 'translateY(0) scale(1)' }))
+      ]),
+      transition(':leave', [
+        animate('200ms cubic-bezier(0.4,0,0.2,1)', style({ opacity: 0, transform: 'translateY(-20px) scale(0.98)' }))
+      ])
     ])
   ]
 })
@@ -97,9 +106,19 @@ export class PostsComponent {
 
   updatePost() {
     if (this.editId == null) return;
-    this.postService.updatePost(this.editId, { title: this.editTitle, content: this.editContent }).subscribe(updated => {
-      this.cancelEdit();
-      this.loadPosts();
+    this.postService.updatePost(this.editId, { title: this.editTitle, content: this.editContent }).subscribe({
+      next: updated => {
+        notificationSignal.set({ type: 'success', message: '¡Post editado exitosamente!' });
+        this.cancelEdit();
+        this.loadPosts();
+        setTimeout(() => notificationSignal.set(null), 2000);
+      },
+      error: err => {
+        let msg = 'Error al editar el post.';
+        if (err?.error?.message) msg = err.error.message;
+        notificationSignal.set({ type: 'error', message: msg });
+        setTimeout(() => notificationSignal.set(null), 2500);
+      }
     });
   }
 

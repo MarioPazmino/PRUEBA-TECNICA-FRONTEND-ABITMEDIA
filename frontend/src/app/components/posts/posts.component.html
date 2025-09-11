@@ -47,12 +47,11 @@
       </ng-container>
     </div>
     <div *ngIf="editing" class="fixed inset-0 bg-transparent backdrop-blur-sm flex items-center justify-center z-50">
-      <div class="bg-gray-900/90 dark:bg-gray-900/90 p-8 rounded-2xl shadow-2xl w-full max-w-md border border-gray-700 dark:border-gray-800 flex flex-col items-center">
+  <div [@modalAnim] class="bg-gray-900/90 dark:bg-gray-900/90 p-8 rounded-2xl shadow-2xl w-full max-w-md border border-gray-700 dark:border-gray-800 flex flex-col items-center">
         <h3 class="text-2xl font-extrabold mb-6 text-blue-500 dark:text-blue-400 text-center">Editar Post</h3>
         <form (ngSubmit)="updatePost()" class="flex flex-col gap-4 w-full">
           <div>
             <input [(ngModel)]="editTitle" name="editTitle" required maxlength="100" placeholder="Título (máx 100)" class="block w-full rounded-lg border border-gray-700 bg-gray-800 p-3 text-blue-200 dark:text-blue-100 font-semibold focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-200" />
-            <!-- Contador oculto para el título, pero sigue el maxlength en el input -->
           </div>
           <div>
             <textarea [(ngModel)]="editContent" name="editContent" required maxlength="2000" placeholder="Contenido (máx 2000)" class="block w-full rounded-lg border border-gray-700 bg-gray-800 p-3 text-blue-200 dark:text-blue-100 font-normal focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-200 resize-none min-h-[80px]"></textarea>
