@@ -1,11 +1,29 @@
 
 
-<div class="fixed top-2 right-4 z-50">
-        <app-language-selector
-            [currentLang]="currentLang"
-            (langChange)="onLangChange($event)"
-        />
+
+
+<!-- Sidebar hamburguesa solo en móvil y logueado -->
+<app-sidebar *ngIf="isMobile && isLoggedIn" [currentLang]="currentLang" (langChange)="onLangChange($event)"></app-sidebar>
+
+<!-- Selector de idioma en móvil si NO está logueado -->
+<div class="md:hidden fixed top-2 left-2 z-50" *ngIf="isMobile && !isLoggedIn">
+    <app-language-selector
+        [currentLang]="currentLang"
+        (langChange)="onLangChange($event)"
+    />
 </div>
+
+<!-- Header y selector de idioma fijos en desktop -->
+<div class="hidden md:block fixed top-2 right-2 z-50">
+    <app-header></app-header>
+</div>
+<div class="hidden md:block fixed top-2 left-4 z-50">
+    <app-language-selector
+        [currentLang]="currentLang"
+        (langChange)="onLangChange($event)"
+    />
+</div>
+
 
 <router-outlet></router-outlet>
 

@@ -1,0 +1,16 @@
+/* Sidebar styles for mobile */
+@media (max-width: 768px) {
+  aside {
+    animation: fadeInSidebar 0.3s cubic-bezier(0.4,0,0.2,1);
+    box-shadow: 0 0 32px 0 rgba(30, 64, 175, 0.25), 0 2px 8px 0 rgba(0,0,0,0.12);
+    transition: box-shadow 0.2s, background 0.2s;
+    width: 80vw;
+    min-width: 260px;
+    max-width: 340px;
+    padding: 1.5rem 1rem 2rem 1rem;
+  }
+  @keyframes fadeInSidebar {
+    from { transform: translateX(-100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+  }
+}

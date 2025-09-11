@@ -1,0 +1,30 @@
+<div class="md:hidden"></div>
+  <button (click)="toggleSidebar()" class="fixed top-3 left-3 z-50 p-2 rounded-lg bg-gray-900 text-white shadow-lg focus:outline-none">
+    <!-- Heroicon: Menu -->
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-7 h-7">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+    </svg>
+  </button>
+  <div *ngIf="sidebarOpen" class="fixed inset-0 bg-black/40 z-40" (click)="toggleSidebar()"></div>
+  <aside *ngIf="sidebarOpen" class="fixed top-0 left-0 h-full w-72 bg-gradient-to-b from-blue-900 via-blue-800 to-blue-950 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 shadow-2xl z-50 flex flex-col p-6 gap-6 animate-fade-in rounded-r-2xl border-r border-blue-700">
+    <div class="flex flex-col items-center gap-4 mb-4">
+      <div class="flex items-center gap-3 w-full justify-between">
+        <app-language-selector [currentLang]="currentLang" (langChange)="onLangChange($event)"></app-language-selector>
+        <button (click)="toggleSidebar()" class="p-2 rounded-full bg-gray-800 hover:bg-gray-700 text-white shadow-md ml-2">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+      <div class="flex flex-col items-center w-full mt-4">
+        <app-header></app-header>
+      </div>
+    </div>
+    <div class="flex-1"></div>
+    <button (click)="logout()" class="w-full flex items-center justify-center py-4 rounded-xl bg-blue-600 hover:bg-blue-700 text-white shadow-lg mt-4">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H7a2 2 0 01-2-2V7a2 2 0 012-2h6a2 2 0 012 2v1" />
+      </svg>
+    </button>
+  </aside>
+

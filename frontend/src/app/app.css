@@ -1,3 +1,9 @@
+/* Espaciado extra para posts en móvil para evitar solapamiento con header/language selector */
+@media screen and (max-width: 768px) {
+	.posts-main-wrapper {
+		margin-top: 5.5rem !important;
+	}
+}
 @keyframes fadeOut {
 	0% { opacity: 1; transform: scale(1); }
 	100% { opacity: 0; transform: scale(0.95); }
