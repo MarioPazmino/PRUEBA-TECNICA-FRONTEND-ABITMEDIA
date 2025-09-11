@@ -47,4 +47,23 @@
     "cancelBtn": "Cancelar",
     "chars": "caracteres"
   }
+  ,
+  "comments": {
+    "title": "Comentarios",
+    "addPlaceholder": "Agregar comentario...",
+    "editPlaceholder": "Editar comentario",
+    "chars": "caracteres",
+    "add": "Agregar",
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "order": "Cambiar orden",
+    "created": "¡Comentario agregado exitosamente!",
+    "edited": "Comentario editado correctamente.",
+    "deleted": "Comentario eliminado correctamente.",
+    "errorAdd": "Error al agregar el comentario.",
+    "errorEdit": "Error al editar el comentario.",
+    "errorDelete": "Error al eliminar el comentario."
+  }
 }

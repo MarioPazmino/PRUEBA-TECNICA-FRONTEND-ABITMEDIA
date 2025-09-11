@@ -47,4 +47,23 @@
     "cancelBtn": "Cancel",
     "chars": "characters"
   }
+  ,
+  "comments": {
+    "title": "Comments",
+    "addPlaceholder": "Add comment...",
+    "editPlaceholder": "Edit comment",
+    "chars": "characters",
+    "add": "Add",
+    "edit": "Edit",
+    "delete": "Delete",
+    "save": "Save",
+    "cancel": "Cancel",
+    "order": "Change order",
+    "created": "Comment added successfully!",
+    "edited": "Comment edited successfully!",
+    "deleted": "Comment deleted successfully!",
+    "errorAdd": "Error adding comment.",
+    "errorEdit": "Error editing comment.",
+    "errorDelete": "Error deleting comment."
+  }
 }

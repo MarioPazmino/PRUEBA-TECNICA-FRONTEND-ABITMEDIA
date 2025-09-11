@@ -1,7 +1,9 @@
 import { Component, Input, signal, inject } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { TranslateModule } from '@ngx-translate/core';
 import { CommentService } from '../../services/comment.service';
 import { commentsSignal } from '../../signals/comments.signal';
 import { Comment } from '../../models/comment.model';
@@ -11,7 +13,7 @@ import { notificationSignal } from '../../signals/notification.signal';
 @Component({
   selector: 'app-comments',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, TranslateModule],
   templateUrl: './comments.component.html',
   animations: [
     trigger('commentAnim', [
@@ -38,6 +40,7 @@ export class CommentsComponent {
     this.editContent = '';
   }
   private commentService = inject(CommentService);
+  private translate = inject(TranslateService);
   trackById(index: number, comment: Comment) {
     return comment.id;
   }
@@ -68,15 +71,15 @@ export class CommentsComponent {
     if (!this.newComment.trim()) return;
     this.commentService.createComment(this.postId, this.newComment).subscribe({
       next: () => {
-        notificationSignal.set({ type: 'success', message: '¡Comentario agregado exitosamente!' });
+  notificationSignal.set({ type: 'success', message: this.translate.instant('comments.created') });
         this.newComment = '';
         this.loadComments();
         setTimeout(() => notificationSignal.set(null), 2000);
       },
       error: err => {
-        let msg = 'Error al agregar el comentario.';
-        if (err?.error?.message) msg = err.error.message;
-        notificationSignal.set({ type: 'error', message: msg });
+  let msg = this.translate.instant('comments.errorAdd');
+  if (err?.error?.message) msg = err.error.message;
+  notificationSignal.set({ type: 'error', message: msg });
         setTimeout(() => notificationSignal.set(null), 2500);
       }
     });
@@ -94,13 +97,13 @@ export class CommentsComponent {
         this.loadComments();
         this.editingId = null;
         this.editContent = '';
-        notificationSignal.set({ type: 'success', message: 'Comentario editado correctamente.' });
+  notificationSignal.set({ type: 'success', message: this.translate.instant('comments.edited') });
         setTimeout(() => notificationSignal.set(null), 2000);
       },
       error: err => {
-        let msg = 'Error al editar el comentario.';
-        if (err?.error?.message) msg = err.error.message;
-        notificationSignal.set({ type: 'error', message: msg });
+  let msg = this.translate.instant('comments.errorEdit');
+  if (err?.error?.message) msg = err.error.message;
+  notificationSignal.set({ type: 'error', message: msg });
         setTimeout(() => notificationSignal.set(null), 2500);
       }
     });
@@ -110,13 +113,13 @@ export class CommentsComponent {
     this.commentService.deleteComment(this.postId, id).subscribe({
       next: () => {
         this.comments.set(this.comments().filter(c => c.id !== id));
-        notificationSignal.set({ type: 'success', message: 'Comentario eliminado correctamente.' });
+  notificationSignal.set({ type: 'success', message: this.translate.instant('comments.deleted') });
         setTimeout(() => notificationSignal.set(null), 2000);
       },
       error: err => {
-        let msg = 'Error al eliminar el comentario.';
-        if (err?.error?.message) msg = err.error.message;
-        notificationSignal.set({ type: 'error', message: msg });
+  let msg = this.translate.instant('comments.errorDelete');
+  if (err?.error?.message) msg = err.error.message;
+  notificationSignal.set({ type: 'error', message: msg });
         setTimeout(() => notificationSignal.set(null), 2500);
       }
     });
