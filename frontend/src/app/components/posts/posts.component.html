@@ -40,7 +40,7 @@
         </div>
   <p class="mt-2 text-gray-700 dark:text-gray-200 break-words max-w-full overflow-x-auto" style="word-break:break-word; white-space:pre-line;">{{ post.content }}</p>
         <small class="text-gray-400 dark:text-gray-500">Por: {{ post.authorUsername }} | {{ post.createdAt | date:'short' }}</small>
-  <app-comments [postId]="post.id"></app-comments>
+    <app-comments [postId]="post.id"></app-comments>
       </ng-container>
       <ng-container *ngIf="post.id === createdPostId && !post.title">
         <div class="flex items-center justify-center h-16">
